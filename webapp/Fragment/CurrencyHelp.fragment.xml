@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 
+	xmlns:core="sap.ui.core">
+	<Dialog title="Currency Search" >
+        <content>
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="G1" name="A" label="Currency Key" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem groupName="G1" name="B" label="Currency Text"  visibleInFilterBar="true">
+					<fb:control>
+						<Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+			</fb:filterGroupItems>
+
+	    </fb:FilterBar>
+        <Table>
+            <columns>
+                <Column >
+                    <Label text="Currency Key"/>
+                </Column>
+                <Column >
+                    <Label text="Currency Text"/>
+                </Column>
+                
+            </columns>
+            <ColumnListItem type="Navigation" press="onLineItemPress">
+                <cells >
+                    <Text text="ABC" />
+                    <Text text="ABC" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        </content>
+		
+	</Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,162 @@
+{
+    "_version": "1.32.0",
+    "sap.app": {
+        "id": "zprcreatenew",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "1.0.0"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "ach": "ach",
+        "dataSources": {
+            "mainService": {
+                "uri": "/sap/opu/odata/sap/ZP2P_PRAPP_SRV",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "2.0",
+                    "localUri": "localService/metadata.xml"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "zprcreatenew-inbound": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "ZPurchaseReq",
+                    "action": "Create",
+                    "title": "{{flpTitle}}",
+                    "subTitle": "{{flpSubtitle}}",
+                    "icon": ""
+                }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "sap-icon://task",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "rootView": {
+            "viewName": "zprcreatenew.view.PRCreation",
+            "type": "XML",
+            "async": true,
+            "id": "PRCreation1"
+        },
+        "dependencies": {
+            "minUI5Version": "1.96.0",
+            "libs": {
+                "sap.ui.core": {},
+                "sap.m": {},
+                "sap.ui.layout": {},
+                "sap.f": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "zprcreatenew.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "zprcreatenew.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false
+            },
+            "routes": [
+                {
+                    "name": "RoutePRCreation",
+                    "pattern": "RoutePRCreation",
+                    "target": [
+                        "TargetPRCreation"
+                    ]
+                },
+                {
+                    "name": "PRDisplay",
+                    "pattern": "PRDisplay/{Display}",
+                    "titleTarget": "",
+                    "greedy": false,
+                    "target": [
+                        "PRDisplay"
+                    ]
+                },
+                 {
+                    "name": "PRPreview",
+                    "pattern": "PRPreview/{PRPreview}",
+                    "titleTarget": "",
+                    "greedy": false,
+                    "target": [
+                        "PRPreview"
+                    ]
+                }
+            ],
+            "targets": {
+                "TargetPRCreation": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "PRCreation",
+                    "viewName": "PRCreation"
+                },
+                 "PRDisplay": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearAggregation": false,
+                    "viewName": "PRDisplay",
+                    "viewId": "PRDisplay"
+                },
+                "PRPreview": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearAggregation": false,
+                    "viewName": "PRPreview",
+                    "viewId": "PRPreview"
+                }
+            }
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "zprcreatenew"
+    }
+}

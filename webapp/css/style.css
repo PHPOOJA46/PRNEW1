@@ -1,0 +1,100 @@
+/* Enter your custom styles here */
+
+.cls-simpleform .sapUiRespGridMedia-Std-Desktop.sapUiRespGridHSpace0>.sapUiRespGridSpanL5 {
+    width: 27.666667%;
+}
+
+.cls-Favbtn{
+    margin-top:1.7rem
+}
+
+.cls-text1{
+	    padding-left: 5.8rem;
+	    color: #6a6d70;
+}
+
+.cls-text2{
+	    padding-left: 3.6rem;
+	    color: #6a6d70;
+}
+
+.cls-text3{
+	    padding-left: 1.7rem;
+	    color: #6a6d70;
+}
+
+.cls-text4{
+	    padding-left: 6.8rem;
+	    color: #6a6d70;
+}
+
+.cls-text5{
+	padding-left:6.2rem;
+	 color: #6a6d70;
+}
+
+.sapMBarTitleAlignAuto .sapMBarPH {
+    justify-content: center!important;
+}
+
+.cls-simpleform.sapUiFormEdit.sapUiFormM .sapUiRespGridMedia-Std-Phone.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanS12), .sapUiFormEdit.sapUiFormM .sapUiRespGridMedia-Std-Tablet.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanM12), .sapUiFormEdit.sapUiFormM .sapUiRespGridMedia-Std-Desktop.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanL12), .sapUiFormEdit.sapUiFormM .sapUiRespGridMedia-Std-LargeDesktop.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanXL12) {
+    padding-top: 0.875rem;
+    padding-top: 2rem;
+}
+
+.cls-simpleform .sapMLabel{
+	 padding-top: 1rem;
+}
+.cls-simpleform .sapUiRespGrid.sapUiRespGridVSpace0>div {
+    margin-bottom: 0;
+    padding-top: 1rem;
+}
+
+.sapUiFormM .sapUiFormContainerTitle>.sapUiFormTitle {
+    height: 0rem!important;
+    line-height: 2.75rem;
+    font-weight: bold;
+}
+
+.sapUiFormResGrid > div {
+   padding:0rem;
+    box-sizing: border-box;
+}
+
+.sapUiForm .sapUiFormTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+
+}
+
+.cls-coding1{
+    margin-top:5rem!important;
+}
+
+.cls-coding2{
+    margin-top:6.2rem!important;
+}
+
+.cls-coding3{
+    padding-left:2.2rem!important;
+}
+
+.sapMDialog .sapMIBar {
+    position: relative;
+    width: auto;
+    padding-top: 1rem;
+}
+
+.sapMDialog header .sapMBarRight, .sapMDialog header .sapMBarPH {
+    padding-right: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.sapMIBar-CTX .sapMTitle {
+    color: #32363a;
+    text-shadow: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+}

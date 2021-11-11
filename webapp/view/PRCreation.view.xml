@@ -1,0 +1,101 @@
+<mvc:View
+    controllerName="zprcreatenew.controller.PRCreation"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+     xmlns:f="sap.ui.layout.form"
+      xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+>
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<content>
+                    	<VBox class="cls-vbox12" justifyContent="Center" alignItems="Center">
+							<SegmentedButton id="PRType"
+                            selectionChange="onSelectionChange">
+								<items>
+									<SegmentedButtonItem key="CreatePr" width="30%" text="Create PR"/>
+									<SegmentedButtonItem key="CreateMulPr" width="44%" text="Create Multiple Line PR"/>
+									<SegmentedButtonItem key="DispPr" width="44%" text="Display/Change PR"/>
+								</items>
+							</SegmentedButton>
+                          
+						</VBox>
+                        	<f:SimpleForm id="CreatePr"
+                            editable="true" class="cls-simpleform" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="5" labelSpanS="12" emptySpanXL="0"
+							emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" adjustLabelSpan="false" singleContainerFullSize="false">
+							<f:content>
+								<core:Title text=""/>
+								<Label text="Intenal Comments"/>
+								<TextArea value="{PRHeaderModel>/Text}"/>
+								<Label required="true" text="Vendor for Req"/>
+									<Input type="Text" value="{PRHeaderModel>/Elifn}" showValueHelp="true" valueHelpRequest="handleVendorHelp"/>
+								<Text class="cls-text1" text="Currency of Req:"/>
+                                 <Input value="{PRHeaderModel>/Waers}" type="Text" showValueHelp="true" valueHelpRequest="handleCurrencyHelp"/>
+								<Label text="Item Description"/>
+								<Input value="{PRHeaderModel>/Txz01}"/>
+								<Label text="Item Brief Description"/>
+								<Input value="{PRHeaderModel>/Text}"/>
+								<Label text="Item Quantity"/>
+								<Input value="{PRHeaderModel>/Menge}"/>
+								<Text class="cls-text2" text="UOM:"/>
+                                <Input value="{PRHeaderModel>/Meins}" type="Text" showValueHelp="true" valueHelpRequest="handleMeasureHelp"/>
+								<Text class="cls-text3" text="Unit Price:"/>
+								<Input value="{PRHeaderModel>/Peinh}"/>
+								<Label text="Delivery Location"/>
+								<ComboBox  value="{PRHeaderModel>/Land1}"/>
+								<Text class="cls-text4" text="Delivery Date:"/>
+								<DatePicker value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
+								<Label text="Req Coding Type"/>
+								<ComboBox value="{PRHeaderModel>/Knttp}"/>
+								<Label text="Purchase Group"/>
+								<Input value="{PRHeaderModel>/Bkgrp}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+								<Text class="cls-text5" text="Material Group:"/>
+								<Input value="{PRHeaderModel>/Matkl}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+							</f:content>
+						</f:SimpleForm>
+                        	<f:SimpleForm class="cls-simpleform"   id="CreateMulPr" visible="false" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="5" labelSpanM="5" labelSpanS="12" emptySpanXL="0"
+							emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false" singleContainerFullSize="false">
+							<f:content>
+								<core:Title text=""/>
+								
+									<Label text="No of Lines in Req"/>
+								<Input value="{PRHeaderModel>/Bnfpo}" change="handlenoofitems"/>
+								<Label text="Intenal Comments"/>
+								<TextArea value="{PRHeaderModel>/Text}"/>
+								<Label text="Vendor for Req"/>
+								<Input value="{PRHeaderModel>/Elifn}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+								<Label text="Req Coding Type"/>
+                                <Input value="{PRHeaderModel>/Knttp}" type="Text" showValueHelp="true" valueHelpRequest=" handleCodingReqHelp"/>
+								<Label text="Material Group"/>
+								<Input value="{PRHeaderModel>/Matkl}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+								<core:Title text="" class="cls-Favbtn"/>
+								<Label></Label>
+								<Text/>
+								<Label></Label>
+							
+									<Label></Label>
+							    <Button class="cls-Favbtn" text="Favourites" press="onFavourite" width="40%"/>
+								<Label text="Currency of Req"/>
+								<ComboBox value="{PRHeaderModel>/Waers}"/>
+								<Label text="Delivery Date"/>
+								<DatePicker value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
+								<Label text="Purchase Group"/>
+								<Input value="{PRHeaderModel>/Bkgrp}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+							</f:content>
+						</f:SimpleForm>
+                    </content>
+                    	<footer>
+						<OverflowToolbar>
+							<Button id="prSave"  text="Add Coding Detail" type="Accept" press="onCodingDetail" visible="true"/>
+							<ToolbarSpacer visible="{device>/isNoPhone}"/>
+							<Button  class="sapUiSmallMarginEnd" id="arrLeft"  visible="true" press="onSubmit" text="Save" type="Accept"/>
+							<Button id="prCancel" icon="" class="sapUiSmallMarginEnd" type="Reject" text="Cancel" press="onPRDetailCancel" visible="true"/>
+						</OverflowToolbar>
+					</footer>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
