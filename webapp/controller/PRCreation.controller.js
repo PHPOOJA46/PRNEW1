@@ -679,6 +679,9 @@ sap.ui.define([
                             window.PRNum = this.PRNum;
                              }
                             this.onStartUpload(this.PRNum);
+                            if (SubmitFlag === "X") {
+                                this.onWorkflow(window.PRNum);
+                                }
                             this.getView().setBusy(false);
                             sap.m.MessageBox.success(sAlert, {
                                 title: "Success",

@@ -205,10 +205,57 @@ sap.ui.define(
                         val = val.toLocaleUpperCase();
                         if (val === "K") {
                             sap.ui.getCore().byId("CostCenterFrag").setEditable(true);
+                          /*  sap.ui.getCore().byId("IntOrderFrag").setValue("");
+                            sap.ui.getCore().byId("IsbnFrag").setValue("");
+                            sap.ui.getCore().byId("BatchFrag").setValue("");*/
+                            //sap.ui.getCore().byId("ProfitCenterFrag").setValue("");
+                            //  sap.ui.getCore().byId("ProfitCenterFrag").setEditable(true);
+                        } else if (val === "F") {
+                            sap.ui.getCore().byId("IntOrderFrag").setEditable(true);
+                           /* sap.ui.getCore().byId("CostCenterFrag").setValue("");
+                            // sap.ui.getCore().byId("IntOrderFrag").setValue("");
+                            sap.ui.getCore().byId("IsbnFrag").setValue("");
+                            sap.ui.getCore().byId("BatchFrag").setValue("");*/
+                          //  sap.ui.getCore().byId("ProfitCenterFrag").setValue("");
+                        } else if (val === "8") {
+                            sap.ui.getCore().byId("ProfitCenterFrag").setEditable(true);
+                            /*sap.ui.getCore().byId("CostCenterFrag").setValue("");
+                            sap.ui.getCore().byId("IntOrderFrag").setValue("");
+                            sap.ui.getCore().byId("IsbnFrag").setValue("");
+                            sap.ui.getCore().byId("BatchFrag").setValue("");*/
+                            // sap.ui.getCore().byId("ProfitCenterFrag").setValue("");
+                        } else if (val === "9") {
+                            sap.ui.getCore().byId("IsbnFrag").setEditable(true);
+                            sap.ui.getCore().byId("BatchFrag").setEditable(true);
+                        /*    sap.ui.getCore().byId("CostCenterFrag").setValue("");
+                            sap.ui.getCore().byId("IntOrderFrag").setValue("");
+                            //sap.ui.getCore().byId("ProfitCenterFrag").setValue("");*/
+                        }
+                    }
+                }
+            },
+
+            setCodingVisibility1: function (val) {
+                if (sap.ui.getCore().byId("CostCenterFrag")) {
+                    sap.ui.getCore().byId("CostCenterFrag").setEditable(false);
+                    sap.ui.getCore().byId("IntOrderFrag").setEditable(false);
+                    sap.ui.getCore().byId("IsbnFrag").setEditable(false);
+                    sap.ui.getCore().byId("BatchFrag").setEditable(false);
+                    sap.ui.getCore().byId("ProfitCenterFrag").setEditable(false);
+
+                    /*sap.ui.getCore().byId("CostCenterFrag").setValue("");
+                    sap.ui.getCore().byId("IntOrderFrag").setValue("");
+                    sap.ui.getCore().byId("IsbnFrag").setValue("");
+                    sap.ui.getCore().byId("BatchFrag").setValue("");
+                    sap.ui.getCore().byId("ProfitCenterFrag").setValue("");*/
+                    if (val) {
+                        val = val.toLocaleUpperCase();
+                        if (val === "K") {
+                            sap.ui.getCore().byId("CostCenterFrag").setEditable(true);
                             sap.ui.getCore().byId("IntOrderFrag").setValue("");
                             sap.ui.getCore().byId("IsbnFrag").setValue("");
                             sap.ui.getCore().byId("BatchFrag").setValue("");
-                            sap.ui.getCore().byId("ProfitCenterFrag").setValue("");
+                            //sap.ui.getCore().byId("ProfitCenterFrag").setValue("");
                             //  sap.ui.getCore().byId("ProfitCenterFrag").setEditable(true);
                         } else if (val === "F") {
                             sap.ui.getCore().byId("IntOrderFrag").setEditable(true);
@@ -219,7 +266,7 @@ sap.ui.define(
                           //  sap.ui.getCore().byId("ProfitCenterFrag").setValue("");
                         } else if (val === "8") {
                             sap.ui.getCore().byId("ProfitCenterFrag").setEditable(true);
-                            sap.ui.getCore().byId("CostCenterFrag").setValue("");
+                        sap.ui.getCore().byId("CostCenterFrag").setValue("");
                             sap.ui.getCore().byId("IntOrderFrag").setValue("");
                             sap.ui.getCore().byId("IsbnFrag").setValue("");
                             sap.ui.getCore().byId("BatchFrag").setValue("");
@@ -227,13 +274,14 @@ sap.ui.define(
                         } else if (val === "9") {
                             sap.ui.getCore().byId("IsbnFrag").setEditable(true);
                             sap.ui.getCore().byId("BatchFrag").setEditable(true);
-                            sap.ui.getCore().byId("CostCenterFrag").setValue("");
+                           sap.ui.getCore().byId("CostCenterFrag").setValue("");
                             sap.ui.getCore().byId("IntOrderFrag").setValue("");
                             //sap.ui.getCore().byId("ProfitCenterFrag").setValue("");
                         }
                     }
                 }
             },
+
 
             fillcurrency: function (oEvent) {
                 var oMdl = this.getOwnerComponent().getModel("valuehelp");
@@ -1198,7 +1246,56 @@ sap.ui.define(
                 else {
                     oEvent.getSource().setValue(sNumber);
                 }
-            }
+            },
+
+            onWorkflow: function (prno) {
+                var RequestContent = {
+                    PurchaseRequest: {}
+                };
+               // var sRequisitionNumber = Context.Request.BAPI_REQUISITION_GETDETAIL.NUMBER;
+                RequestContent.PurchaseRequest = { "DocumentId": prno };
+                RequestContent.PurchaseRequest.Requestor = "pphani@penguinrandomhouse.co.uk";//sap.ushell.Container.getService("UserInfo").getUser().getEmail();
+                var token;
+                var self = this;
+                $.ajax({
+                    url: self._getRuntimeBaseURL() + "/bpmworkflowruntime/v1/xsrf-token",
+                    method: "GET",
+                    async: false,
+                    headers: {
+                        "X-CSRF-Token": "Fetch"
+                    },
+                    success: function (result, xhr, data) {
+                        token = data.getResponseHeader("X-CSRF-Token");
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json",
+                            headers: {
+                                "X-CSRF-Token": token
+                            },
+                            url: self._getRuntimeBaseURL() + "/bpmworkflowruntime/v1/workflow-instances",
+                            data: JSON.stringify({
+                                definitionId: "InitializePurchaseRequisitionApprovalProcess",
+                                context: RequestContent
+                            }),
+                            success: function (result2, xhr2, data2) {
+                                // MessageToast.show("Workflow started with success");
+                            },
+                            error: function (err) {
+                                MessageToast.show("Error submiting the request");
+                            }
+                        });
+                    }
+                });
+            },
+
+            _getRuntimeBaseURL: function () {
+                var appId = this.getOwnerComponent().getManifestEntry("/sap.app/id");
+                var appPath = appId.replaceAll(".", "/");
+                var appModulePath = jQuery.sap.getModulePath(appPath);
+    
+                return appModulePath;
+            },
+    
 
 
         });
