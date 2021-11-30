@@ -27,70 +27,146 @@
 							emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" adjustLabelSpan="false" singleContainerFullSize="false">
 							<f:content>
 								<core:Title text=""/>
-								<Label text="Intenal Comments"/>
-								<TextArea value="{PRHeaderModel>/Text}"/>
+								<Label  text="Internal Comments"/>
+								<TextArea maxLength="1000" value="{PRHeaderModel>/Text}"/>
 								<Label required="true" text="Vendor for Req"/>
-									<Input type="Text" value="{PRHeaderModel>/Elifn}" showValueHelp="true" valueHelpRequest="handleVendorHelp"/>
-								<Text class="cls-text1" text="Currency of Req:"/>
-                                 <Input value="{PRHeaderModel>/Waers}" type="Text" showValueHelp="true" valueHelpRequest="handleCurrencyHelp"/>
-								<Label text="Item Description"/>
-								<Input value="{PRHeaderModel>/Txz01}"/>
+									<Input id="Vendor" selectedKey="{PRHeaderModel>/Elifn}" textFormatMode="KeyValue" type="Text"  showValueHelp="true" valueHelpOnly="true" 	suggestionItems="{valuehelp>/VandorSet}"  valueHelpRequest="handleVendorHelp">
+                                    	<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>LIFNR}"
+					text="{valuehelp>NAME1}"
+				 />
+			</suggestionItems>
+            	</Input>
+                            	<Text class="cls-text1" text="Currency of Req:"/>
+                                 <Input id="Currency" value="{PRHeaderModel>/Waers}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleCurrencyHelp"/>
+								<Label required="true" text="Item Description"/>
+								<Input maxLength="40" id="ItemDesc" change="onInputChange" value="{PRHeaderModel>/Txz01}"/>
 								<Label text="Item Brief Description"/>
-								<Input value="{PRHeaderModel>/Text}"/>
-								<Label text="Item Quantity"/>
-								<Input value="{PRHeaderModel>/Menge}"/>
+								<Input maxLength="1000" value="{PRHeaderModel>/Text1}"/>
+								<Label required="true" text="Item Quantity"/>
+                                   <Input  id="Quantity" liveChange="liveChange1" change="afterchange1"
+			      maxLength= "13" value="{
+   path: 'PRHeaderModel>/Menge'
+   
+}"/>
+								<!--<Input   id="Quantity"  value="{path: 'PRHeaderModel>/Menge',type: 'sap.ui.model.type.Float',
+				formatOptions: { 
+					maxIntegerDigits: 1,
+                    	maxFractionDigits: 3,
+                        groupingEnabled: true
+                        
+				}}" />-->
+                               
 								<Text class="cls-text2" text="UOM:"/>
-                                <Input value="{PRHeaderModel>/Meins}" type="Text" showValueHelp="true" valueHelpRequest="handleMeasureHelp"/>
-								<Text class="cls-text3" text="Unit Price:"/>
-								<Input value="{PRHeaderModel>/Peinh}"/>
-								<Label text="Delivery Location"/>
-								<ComboBox  value="{PRHeaderModel>/Land1}"/>
+                                <Input  id="UOM" value="{PRHeaderModel>/Meins}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleMeasureHelp"/>
+								<Label required="true" text="Unit Price"/>
+                                <Input id="Price"  liveChange="liveChange"
+			      maxLength= "5" value="{
+   path: 'PRHeaderModel>/Peinh'
+   
+}"/>
+             <!-- <Input liveChange="formatprice1" value="{
+   path: 'PRHeaderModel>/Peinh',
+   type: 'new sap.ui.model.type.Float({
+	     		maxFractionDigits: 2  				
+			})'
+}" />-->
+
+								<!--<Input    id="Price" liveChange="formatprice" value="{path: 'PRHeaderModel>/Peinh'}"
+				 />-->
+                                <!--<ComboBox  value="{PRHeaderModel>/Land1}"/>-->
 								<Text class="cls-text4" text="Delivery Date:"/>
-								<DatePicker value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
-								<Label text="Req Coding Type"/>
-								<ComboBox value="{PRHeaderModel>/Knttp}"/>
-								<Label text="Purchase Group"/>
-								<Input value="{PRHeaderModel>/Bkgrp}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+								<DatePicker change="dateCheck"  id="DeliveryDate" value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
+								<Label required="true" text="Req Coding Type"/>
+                                 <ComboBox id="ReqCoding" change="ReqCodingChange" selectionChange="ReqCodingChange" items="{ReqModel>/results}" selectedKey="{PRHeaderModel>/Knttp}">
+                                                <core:Item key="{ReqModel>ACASIGNCAT}" text="{ReqModel>ATEXT}"/>
+                                            </ComboBox>
+							  <!--<Input value="{PRHeaderModel>/Knttp}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest=" handleCodingReqHelp"/>-->
+								<Label required="true" text="Purchase Group"/>
+								<Input id='PurGroup'  selectedKey="{PRHeaderModel>/Bkgrp}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/PurchaseGroupSet}" type="Text"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePurchaseGroupHelp">
+                                
+<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>EKGRP}"
+					text="{valuehelp>EKNAM}"
+					 />
+			</suggestionItems>
+
+	</Input>
 								<Text class="cls-text5" text="Material Group:"/>
-								<Input value="{PRHeaderModel>/Matkl}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-							</f:content>
+								<Input id="MatGroup"  selectedKey="{PRHeaderModel>/Matkl}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/MaterialGroupSet}"  type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePRMatValueHelp">
+							<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>MATKL}"
+					text="{valuehelp>WGBEZ}"
+				 />
+			</suggestionItems>
+            </Input>
+                            </f:content>
 						</f:SimpleForm>
                         	<f:SimpleForm class="cls-simpleform"   id="CreateMulPr" visible="false" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="5" labelSpanM="5" labelSpanS="12" emptySpanXL="0"
 							emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false" singleContainerFullSize="false">
 							<f:content>
 								<core:Title text=""/>
 								
-									<Label text="No of Lines in Req"/>
-								<Input value="{PRHeaderModel>/Bnfpo}" change="handlenoofitems"/>
-								<Label text="Intenal Comments"/>
-								<TextArea value="{PRHeaderModel>/Text}"/>
-								<Label text="Vendor for Req"/>
-								<Input value="{PRHeaderModel>/Elifn}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-								<Label text="Req Coding Type"/>
-                                <Input value="{PRHeaderModel>/Knttp}" type="Text" showValueHelp="true" valueHelpRequest=" handleCodingReqHelp"/>
-								<Label text="Material Group"/>
-								<Input value="{PRHeaderModel>/Matkl}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-								<core:Title text="" class="cls-Favbtn"/>
+									<Label required="true" text="No of Lines in Req"/>
+								<Input   id="idBnfo" value="{PRHeaderModel>/Bnfpo}" change="handlenoofitems"/>
+								<Label text="Internal Comments"/>
+								<TextArea  maxLength="1000" value="{PRHeaderModel>/Text}"/>
+								<Label required="true" text="Vendor for Req"/>
+								<Input id="idVendor" selectedKey="{PRHeaderModel>/Elifn}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/VandorSet}"  type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleVendorHelp">
+								<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>LIFNR}"
+					text="{valuehelp>NAME1}"
+					additionalText="{ProductId}" />
+			</suggestionItems>
+
+	</Input>
+                                <Label required="true" text="Req Coding Type"/>
+                                  <ComboBox id="idReqCodingType" change="ReqCodingChange" selectionChange="ReqCodingChange" items="{ReqModel>/results}" selectedKey="{PRHeaderModel>/Knttp}">
+                                                <core:Item key="{ReqModel>ACASIGNCAT}" text="{ReqModel>ATEXT}"/>
+                                            </ComboBox>
+                                <!--<Input value="{PRHeaderModel>/Knttp}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest=" handleCodingReqHelp"/>-->
+								<Label required="true" text="Material Group"/>
+								<Input id="idMaterialGroup" selectedKey="{PRHeaderModel>/Matkl}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/MaterialGroupSet}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePRMatValueHelp">
+									<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>MATKL}"
+					text="{valuehelp>WGBEZ}"
+				 />
+			</suggestionItems>
+            </Input>
+                                <core:Title text="" class="cls-Favbtn"/>
 								<Label></Label>
 								<Text/>
 								<Label></Label>
 							
 									<Label></Label>
 							    <Button class="cls-Favbtn" text="Favourites" press="onFavourite" width="40%"/>
-								<Label text="Currency of Req"/>
-								<ComboBox value="{PRHeaderModel>/Waers}"/>
-								<Label text="Delivery Date"/>
-								<DatePicker value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
-								<Label text="Purchase Group"/>
-								<Input value="{PRHeaderModel>/Bkgrp}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-							</f:content>
+								<Label required="true" text="Currency of Req"/>
+                                <Input id="idCurrency" value="{PRHeaderModel>/Waers}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleCurrencyHelp"/>
+								<Label required="true" text="Delivery Date"/>
+								<DatePicker change="dateCheck" id="idDeliveryDate" value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
+								<Label required="true" text="Purchase Group"/>
+								<Input id="idPurchaseGroup" selectedKey="{PRHeaderModel>/Bkgrp}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/PurchaseGroupSet}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePurchaseGroupHelp">
+							<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>EKGRP}"
+					text="{valuehelp>EKNAM}"
+					 />
+			</suggestionItems>
+
+	</Input>
+                            </f:content>
 						</f:SimpleForm>
                     </content>
                     	<footer>
 						<OverflowToolbar>
 							<Button id="prSave"  text="Add Coding Detail" type="Accept" press="onCodingDetail" visible="true"/>
 							<ToolbarSpacer visible="{device>/isNoPhone}"/>
-							<Button  class="sapUiSmallMarginEnd" id="arrLeft"  visible="true" press="onSubmit" text="Save" type="Accept"/>
+							<Button  class="sapUiSmallMarginEnd" id="arrLeft"  visible="true" press="onSubmit1" text="Save" type="Accept"/>
 							<Button id="prCancel" icon="" class="sapUiSmallMarginEnd" type="Reject" text="Cancel" press="onPRDetailCancel" visible="true"/>
 						</OverflowToolbar>
 					</footer>

@@ -1,0 +1,47 @@
+<core:FragmentDefinition
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Purchase Group Search" resizable="true" draggable="true" contentWidth="70%">
+        <content>
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSPG">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="EKGRP" name="A" label="Purchase Group" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <Input />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem groupName="EKNAM" name="B" label="Purchase Group Description"  visibleInFilterBar="true">
+					<fb:control>
+						<Input />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+			</fb:filterGroupItems>
+
+	    </fb:FilterBar>
+        <Table id="idTableVHSPG" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/PurchaseGroupSet}" growing="true" growingThreshold="100">
+            <columns>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Label text="Purchase Group"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Label text="Purchase Group Description"/>
+                </Column>
+                
+            </columns>
+            <ColumnListItem type="Navigation" press="onValueHelpPGLineItemPress" cd:mdl="{HImdl>/mdlName}">
+                <cells >
+                    <Text text="{valuehelp>EKGRP}" />
+                    <Text text="{valuehelp>EKNAM}" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        </content>
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
+	</Dialog>
+</core:FragmentDefinition>

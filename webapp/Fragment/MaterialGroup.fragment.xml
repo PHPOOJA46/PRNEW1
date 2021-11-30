@@ -1,0 +1,53 @@
+<core:FragmentDefinition
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Material Group" >
+        <content>
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSMat">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="MATKL" name="A" label="Material Group" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem groupName="WGBEZ" name="B" label="Material Group Description"  visibleInFilterBar="true">
+					<fb:control>
+						<Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				
+
+			</fb:filterGroupItems>
+
+	    </fb:FilterBar>
+        <Table id="idTableVHSMat" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/MaterialGroupSet}" growing="true" growingThreshold="100">
+            <columns>
+                <Column >
+                    <Label text="Material Group"/>
+                </Column>
+                <Column >
+                    <Label text="Description"/>
+                </Column>
+                 <Column >
+                    <Label text="G/L Account"/>
+                </Column>
+            </columns>
+            <ColumnListItem type="Navigation" press="onValueHelpMatLineItemPress" cd:mdl="{HImdl>/mdlName}">
+                <cells >
+                    <Text text="{valuehelp>MATKL}" />
+                    <Text text="{valuehelp>WGBEZ}" />
+                    <Text text="{valuehelp>SAKNR}" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        </content>
+		 
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
+	</Dialog>
+</core:FragmentDefinition>

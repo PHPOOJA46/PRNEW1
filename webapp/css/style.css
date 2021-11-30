@@ -13,9 +13,19 @@
 	    color: #6a6d70;
 }
 
-.cls-text2{
-	    padding-left: 3.6rem;
-	    color: #6a6d70;
+.cls-text1:after{
+    content: "*";
+    color: red;
+}
+
+.cls-text2 {
+    padding-left: 9.7rem;
+    color: #6a6d70;
+}
+
+.cls-text2:after{
+    content: "*";
+    color: red;
 }
 
 .cls-text3{
@@ -23,14 +33,28 @@
 	    color: #6a6d70;
 }
 
+.cls-text3:after{
+    content: "*";
+    color: red;
+}
+
 .cls-text4{
 	    padding-left: 6.8rem;
 	    color: #6a6d70;
 }
 
+.cls-text4:after{
+    content: "*";
+    color: red;
+}
 .cls-text5{
 	padding-left:6.2rem;
 	 color: #6a6d70;
+}
+
+.cls-text5:after{
+    content: "*";
+    color: red;
 }
 
 .sapMBarTitleAlignAuto .sapMBarPH {
@@ -73,11 +97,11 @@
 }
 
 .cls-coding2{
-    margin-top:6.2rem!important;
+    margin-top:3.9rem!important;
 }
 
 .cls-coding3{
-    padding-left:2.2rem!important;
+    padding-left:0rem!important;
 }
 
 .sapMDialog .sapMIBar {
@@ -97,4 +121,13 @@
     text-shadow: none;
     font-weight: bold;
     font-size: 1.2rem;
+}
+
+.cls-textfrag1 {
+    color: #828487;
+}
+
+.sapMInputBaseReadonly .sapMInputBaseContentWrapper {
+    border-color: #89919a;
+    background: rgb(148 148 148);
 }

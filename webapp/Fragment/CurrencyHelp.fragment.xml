@@ -1,44 +1,65 @@
 <core:FragmentDefinition
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	xmlns:l="sap.ui.layout" 
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	xmlns:core="sap.ui.core">
-	<Dialog title="Currency Search" >
+	<Dialog title="Currency Search" resizable="true" draggable="true" contentWidth="70%">
         <content>
-            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSCURRENCY">
 			<fb:filterGroupItems>
-				<fb:FilterGroupItem groupName="G1" name="A" label="Currency Key" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="WAERS" name="A" label="Currency" partOfCurrentVariant="true" visibleInFilterBar="true">
 					<fb:control>
-                        <Input type="Text"/>
+                        <Input />
 					</fb:control>
 				</fb:FilterGroupItem>
 
-				<fb:FilterGroupItem groupName="G1" name="B" label="Currency Text"  visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="KTEXT" name="B" label="Currency Text"  visibleInFilterBar="true">
 					<fb:control>
-						<Input type="Text"/>
+						<Input />
 					</fb:control>
 				</fb:FilterGroupItem>
-
 			</fb:filterGroupItems>
-
 	    </fb:FilterBar>
-        <Table>
+
+       
+        <Table id="idTableVHSCURRENCY1" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{CurrModel>/results}" growing="true" growingThreshold="100">
             <columns>
-                <Column >
-                    <Label text="Currency Key"/>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Label text="Currency"/>
                 </Column>
-                <Column >
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
                     <Label text="Currency Text"/>
                 </Column>
                 
             </columns>
-            <ColumnListItem type="Navigation" press="onLineItemPress">
+            <ColumnListItem type="Navigation" press="onValueHelpCurrencyLineItemPress" cd:mdl="{HImdl>/mdlName}">
                 <cells >
-                    <Text text="ABC" />
-                    <Text text="ABC" />
+                    <Text text="{CurrModel>WAERS}" />
+                    <Text text="{CurrModel>KTEXT}" />
                 </cells>
             </ColumnListItem>
         </Table>
+        <Table id="idTableVHSCURRENCY"  sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" visible="true" items="{valuehelp>/CurrencySet}" growing="true" growingThreshold="100">
+            <columns>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Label text="Currency"/>
+                </Column>
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Label text="Currency Text"/>
+                </Column>
+                
+            </columns>
+            <ColumnListItem type="Navigation" press="onValueHelpCurrencyLineItemPress" cd:mdl="{HImdl>/mdlName}">
+                <cells >
+                    <Text text="{valuehelp>WAERS}" />
+                    <Text text="{valuehelp>KTEXT}" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        
         </content>
-		
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
 	</Dialog>
 </core:FragmentDefinition>

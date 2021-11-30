@@ -10,8 +10,8 @@
   ],
   "role-templates": [
     {
-      "name": "Token_Exchange",
-      "description": "UAA",
+      "name": "Token_Exchange1",
+      "description": "UAA1",
       "scope-references": [
         "uaa.user"
       ]

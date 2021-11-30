@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Delivery Location">
+		<content>
+        	<RadioButtonGroup id="rbg3" columns="5" valueState="Error" class="sapUiMediumMarginBottom">
+			<RadioButton id="RB3-1" text="Fixed Address" />
+			<RadioButton id="RB3-2" text="Manual Address" />
+		
+		</RadioButtonGroup>
+		<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="5" labelSpanS="12" emptySpanXL="0"
+		emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false" singleContainerFullSize="false">
+		<f:content>
+                	<core:Title text="Quantity"/>
+					<Label text="Name"/>
+					<Input  value="{DeliveryAddModel>/quantity}"/>
+                    <Label text="Building"/>
+					<Input  value="{DeliveryAddModel>/quantity}"/>
+                    <Label text="Street"/>
+					<Input  value="{DeliveryAddModel>/quantity}"/>
+					<core:Title text=""/>
+                    <Label text="City"/>
+					<Input  value="{DeliveryAddModel>/quantity}"/>
+                    <Label text="Postal Code"/>
+					<Input  value="{DeliveryAddModel>/quantity}"/>
+                    <Label text="Country"/>
+					<Input  value="{DeliveryAddModel>/quantity}"/>
+					</f:content>
+			</f:SimpleForm>
+		</content>
+			<beginButton>
+		<Button press="onDeliverySubmit" text="Submit"/>
+	</beginButton>
+    <endButton>
+    <Button press="onDeliveryClose" text="Close"/>
+    </endButton>
+	</Dialog>
+
+</core:FragmentDefinition>

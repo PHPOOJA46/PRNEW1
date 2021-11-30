@@ -1,38 +1,41 @@
 <core:FragmentDefinition
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	xmlns:l="sap.ui.layout" 
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	xmlns:core="sap.ui.core">
 	<Dialog title="Vendor" >
         <content>
-            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSVEN">
 			<fb:filterGroupItems>
-				<fb:FilterGroupItem groupName="G1" name="A" label="Vendor No" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="LIFNR" name="A" label="Vendor No" partOfCurrentVariant="true" visibleInFilterBar="true">
 					<fb:control>
                         <Input type="Text"/>
 					</fb:control>
 				</fb:FilterGroupItem>
 
-				<fb:FilterGroupItem groupName="G1" name="B" label="Vendor Name"  visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="MCOD1" name="B" label="Vendor Name"  visibleInFilterBar="true">
 					<fb:control>
 						<Input type="Text"/>
 					</fb:control>
 				</fb:FilterGroupItem>
 
-                <fb:FilterGroupItem groupName="G1" name="B1" label="Vendor Country"  visibleInFilterBar="true">
+                <fb:FilterGroupItem groupName="LAND1" name="B1" label="Vendor Country"  visibleInFilterBar="true">
 					<fb:control>
 						<Input type="Text"/>
 					</fb:control>
 				</fb:FilterGroupItem>
-                <fb:FilterGroupItem groupName="G1" name="B2" label="Vendor Currency"  visibleInFilterBar="true">
+                <fb:FilterGroupItem groupName="WAERS" name="B2" label="Vendor Currency"  visibleInFilterBar="true">
 					<fb:control>
 						<Input type="Text"/>
 					</fb:control>
 				</fb:FilterGroupItem>
+                
 
 			</fb:filterGroupItems>
 
 	    </fb:FilterBar>
-        <Table>
+
+        <Table id="idTableVHSVEN"  sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/VandorSet}" growing="true" growingThreshold="100">
             <columns>
                 <Column >
                     <Label text="Vendor No"/>
@@ -48,16 +51,21 @@
                 </Column>
                 
             </columns>
-            <ColumnListItem type="Navigation" press="onLineItemPress">
+            <ColumnListItem type="Navigation" press="onValueHelpVendorLineItemPress" cd:mdl="{HImdl>/mdlName}">
                 <cells >
-                    <Text text="ABC" />
-                    <Text text="ABC" />
-                     <Text text="ABC" />
-                    <Text text="ABC" />
+                    <Text text="{valuehelp>LIFNR}" />
+                    <Text text="{valuehelp>NAME1}" />
+                     <Text text="{valuehelp>LAND1}" />
+                    <Text text="{valuehelp>WAERS}" />
                 </cells>
             </ColumnListItem>
         </Table>
+        
+    
+      
         </content>
-		
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
 	</Dialog>
 </core:FragmentDefinition>

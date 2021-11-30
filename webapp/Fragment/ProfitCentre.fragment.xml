@@ -1,0 +1,51 @@
+<core:FragmentDefinition
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Profit Center Search" resizable="true" draggable="true" contentWidth="70%" >
+        <content>
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSPC">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="PRCTR" name="A" label="Profit Center" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <Input />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem groupName="MCTXT" name="B" label="Profit Center Description"  visibleInFilterBar="true">
+					<fb:control>
+						<Input />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+			</fb:filterGroupItems>
+
+	    </fb:FilterBar>
+        <Table id="idTableVHSPC" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/ProfitCenterSet}" growing="true" growingThreshold="100">
+            <columns>
+                <Column >
+                    <Label text="Profit Center"/>
+                </Column>
+                <Column >
+                    <Label text="Profit Center Description"/>
+                </Column>
+                 <Column >
+                    <Label text="Company Code"/>
+                </Column>
+                
+            </columns>
+            <ColumnListItem type="Navigation" press="onValueHelpProfitCenterLineItemPress" cd:mdl="{HImdl>/mdlName}">
+                <cells >
+                    <Text text="{valuehelp>PRCTR}" />
+                    <Text text="{valuehelp>LTEXT}" />
+                    <Text text="{valuehelp>BUKRS}" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        </content>
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
+	</Dialog>
+</core:FragmentDefinition>

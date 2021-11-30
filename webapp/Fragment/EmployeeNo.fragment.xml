@@ -1,0 +1,49 @@
+<core:FragmentDefinition
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Employee Number Search" resizable="true" draggable="true" contentWidth="70%">
+        <content>
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSEMP">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="AUFNR" name="A" label="Employee Number" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <Input />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem groupName="KTEXT" name="B" label="Description"  visibleInFilterBar="true">
+					<fb:control>
+						<Input />
+					</fb:control>
+				</fb:FilterGroupItem>
+
+			</fb:filterGroupItems>
+
+	    </fb:FilterBar>
+        
+        <Table id="idTableVHSEMP"  sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/EmployeeNumberSet}" growing="true" growingThreshold="100">
+            <columns>
+                <Column >
+                    <Label text="Employee Number"/>
+                </Column>
+                <Column >
+                    <Label text="Description"/>
+                </Column>
+                
+            </columns>
+            <ColumnListItem type="Navigation" press="onValueHelpEmployeeLineItemPress" cd:mdl="{HImdl>/mdlName}">
+                <cells >
+                    <Text text="{valuehelp>AUFNR}" />
+                    <Text text="{valuehelp>KTEXT}" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        
+        </content>
+	<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>	
+	</Dialog>
+</core:FragmentDefinition>

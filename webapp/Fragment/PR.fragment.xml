@@ -9,16 +9,16 @@
 			<Label text="Delivery Country"/>
 			<Text id="delcountry" text="{PRPreviewModel>/HdrToItemNav/results/0/Land1}" />
 			<Label text="Internal Header Note"/>
-			<Text text="{PRPreviewModel>/HdrToItemNav/Text}"/>
+			<Text text="{PRPreviewModel>/Text}"/>
 			<core:Title text=""/>
 			<Label text="PR Creation Date"/>
-            <Text text="{path:'PRPreviewModel>/Aendate',type:'sap.ui.model.type.Date',formatOptions:{pattern:'dd.MM.yyyy'}}"
+            <Text text="{path:'PRPreviewModel>/Erfdate',type:'sap.ui.model.type.Date',formatOptions:{pattern:'dd.MM.yyyy'}}"
 			 />
 			
 			<Label text="PR Status"/>
 			<Text text="{PRPreviewModel>/Zestak}"/>
 			<core:Title text=""/>
-			<Label text="Supplier"/>
+			<Label text="Vendor"/>
 			<Text text="{PRPreviewModel>/Elifn}"/>
 			<Label text="Total PO Amount"/>
 			<Text text="{PRPreviewModel>/Rlwrt}"/>
@@ -30,16 +30,16 @@
 		</f:content>
 	</f:SimpleForm>
 	<ScrollContainer horizontal="true">
-		<Table id="PRPreviewTable" items="{PRPreviewModel>/HdrToItemNav/results}" mode="MultiSelect"  inset="false" class="cl_vendorComparisionTbl">
+		<Table id="PRPreviewTable"  items="{PRPreviewModel>/HdrToItemNav/results}" mode="MultiSelect"  inset="false" class="cl_vendorComparisionTbl sapUiMediumMarginTop">
 			<headerToolbar>
 				<OverflowToolbar>
 					<Title text="{i18n>Item}"/>
-					<CheckBox select="onCodingSelect" class="sapUiMediumMarginBegin" text="View Coding Details"/>
+					<CheckBox id="chckbox" select="onCodingSelect" class="sapUiMediumMarginBegin" text="View Coding Details"/>
 					<ToolbarSpacer/>
 				
 					<Button icon="sap-icon://add" text="{i18n>Add}" press="onCodingDetail" visible="true" type="Reject"/>
 					<Button icon="sap-icon://edit" text="Edit" press="onPREdit"  visible="true" type="Reject"/>
-					<Button icon="sap-icon://delete" text="Delete" press="onPRaddPress" visible="true"  type="Reject"/>
+					<Button icon="sap-icon://delete" text="Delete" press="onPRLineDelete" visible="true"  type="Reject"/>
 				</OverflowToolbar>
 			</headerToolbar>
 			<columns>
@@ -116,18 +116,27 @@
 				<ColumnListItem press="onDetailItemPress">
 					<cells>
 						<Text text="{PRPreviewModel>Bnfpo} "/>
-						<Text text="{PRPreviewModel>Knttp} "/>
+						<Text text="{path: 'PRPreviewModel>Knttp',
+  formatter:'.formatter.getReqCodingText'} "/>
 						<Text text="{PRPreviewModel>Txz01}"/>
 						<Text text="{PRPreviewModel>Menge}"/>
 						<Text text="{PRPreviewModel>Meins} "/>
-						<Text text="{PRPreviewModel>Preis} "/>
+						<Text text="{PRPreviewModel>Peinh} "/>
 						<Text text="{PRPreviewModel>Gswrt}"/>
-						<Text  text="{path:'PRPreviewModel>Lfdat'}"
+                        <Text  text="{ 
+
+  path: 'PRPreviewModel>Lfdat',
+  formatter:'.formatter.formateDate'
+}"
+                       
                       />
+						
+                       
+                  
 						<Text text="{PRPreviewModel>Matkl}"/>
 						<Text text="{PRPreviewModel>Bkgrp} "/>
 						<Text text="{PRPreviewModel>invoice}"/>
-						<Text text="{PRPreviewModel>Estak}"/>
+						<Text text="{PRPreviewModel>Zestak}"/>
 						
 					</cells>
 				</ColumnListItem>
@@ -191,7 +200,6 @@
 					<Text text="{PRPreviewModel>Zzempno} "/>
 					<Text text="{PRPreviewModel>Prctr} "/>
 					<Text text="{PRPreviewModel>Sakto}"/>
-					<Text text="{PRPreviewModel>value}"/>
 					<Text text="{PRPreviewModel>Isbn}"/>
 					<Text text="{PRPreviewModel>Batch} "/>
 				

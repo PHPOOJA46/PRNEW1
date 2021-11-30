@@ -7,12 +7,12 @@
      xmlns:l="sap.ui.layout"
      xmlns:core="sap.ui.core"
 >
-	<Shell>
+	<!--<Shell>
 		<App>
-			<pages>
+			<pages>-->
 				<Page id="page1" title="{i18n>title2}" showNavButton="true" navButtonPress="onBack">
 					<content>
-                 <VBox visible="false" class="cls-vbox12" justifyContent="Center" alignItems="Center">
+                 <VBox visible="false" class="cls-vbox12 sapUiLargeMarginBottom" justifyContent="Center" alignItems="Center">
 							<SegmentedButton id="PRType"
                             selectionChange="onSelectionChange">
 								<items>
@@ -23,28 +23,30 @@
 							</SegmentedButton>
                           
 						</VBox>
-				<IconTabBar class="">
+                        <core:Fragment fragmentName="zprcreatenew.Fragment.PR" type="XML"/>
+					
+				<!--<IconTabBar class="">
 				<items>
 					<IconTabFilter icon="sap-icon://request" iconColor="Positive" design="Vertical" key="PR_IT_01"  text="{i18n>PurReq}">
 						<core:Fragment fragmentName="zprcreatenew.Fragment.PR" type="XML"/>
 					</IconTabFilter>
 				</items>
-			</IconTabBar>
+			</IconTabBar>-->
 		</content>
 		<footer>
 			<OverflowToolbar>
-				<Button icon="sap-icon://attachment" class="cls-attBtn" press="onPRBackPress" id="arrLeft11222" text="Attachment" type="Unstyled"/>
+				<Button icon="sap-icon://attachment" class="cls-attBtn" press="onAttachmentPress" id="arrLeft11222" text="Attachment" type="Unstyled"/>
 				<ToolbarSpacer visible="{device>/isNoPhone}"/>
-				<Button id="prSave" icon="sap-icon://save" text="{i18n>Save}" type="Accept" press="onSubmit" visible="true"/>
-				<Button id="prCancel" icon="sap-icon://sys-cancel" type="Emphasized" text="{i18n>Cancel}" press="onPRDetailCancel" visible="true"/>
-				<Button id="prSaveSubmit" icon="sap-icon://hr-approval" text="Save and Submit" type="Reject" visible="true" press="onSavePrWorkFlow"/>
-				<Button id="prSaveSubmit23" visible="true" text="Withdraw" type="Emphasized" press="onSubmitPR"/>
+				<Button id="prSave" icon="sap-icon://save" text="{i18n>Save}" type="Accept" press="onSubmit1" visible="true"/>
+				<Button id="prCancel" icon="sap-icon://sys-cancel" type="Emphasized" text="{i18n>Cancel}" press="onPRPrevCancel" visible="true"/>
+				<Button id="prSaveSubmit" icon="sap-icon://hr-approval" text="Save and Submit" type="Reject" visible="true" press="onSubmitPR"/>
+				<Button id="prSaveSubmit23" visible="true" text="Withdraw" type="Emphasized" press="onSubmitPR1"/>
 				<ToolbarSpacer visible="{device>/isNoPhone}"/>
-					<Button id="prSaveSubmit222" text="Update Quantity and Price"  type="Emphasized" visible="true" press="onAbc"/>
+					<Button id="prSaveSubmit222" text="Update Quantity and Price"  type="Emphasized" visible="true" press="onQuanUpdate"/>
 			</OverflowToolbar>
 		</footer>
 				</Page>
-			</pages>
+			<!--</pages>
 		</App>
-	</Shell>
+	</Shell>-->
 </mvc:View>

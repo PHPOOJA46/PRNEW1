@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:layout="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:u="sap.ui.unified"
+	xmlns:core="sap.ui.core">
+	<Dialog title="Mass Changes">
+		<content>
+			<!--<f:SimpleForm editable="true" layout="ResponsiveGridLayout" visible="true" labelSpanXL="4" columnsXL="2" emptySpanXL="0" labelSpanL="4"
+				columnsL="2" emptySpanL="0" labelSpanM="4" columnsM="2" emptySpanM="0" labelSpanS="12"  emptySpanS="0" breakpointM="750"
+				adjustLabelSpan="false">
+				<f:content>-->
+                <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="5" labelSpanL="5" labelSpanM="5" labelSpanS="12" emptySpanXL="0"
+		emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false" singleContainerFullSize="false">
+		<f:content>
+                	<core:Title text="Quantity"/>
+					<Label text="Increase Quantity"/>
+					<Input id="idCTV1" placeholder="Percentage Value" change="onIncQuanChange" type="Number" value="{QuantityModel>/quantity}"/>
+					<Label text="Decrease Quantity"/>
+					<Input id="idCDV1" placeholder="Percentage Value" change="onDecQuanChange" type="Number" value="{QuantityModel>/quantity1}"/>
+					<core:Title text="Price"/>
+					<Label text="Increase Price"/>
+					<Input id="idCTV2" placeholder="Percentage Value" change="onIncPriceChange" type="Number" value="{QuantityModel>/price}"/>
+					<Label text="Decrease Price"/>
+					<Input id="idCDV2" placeholder="Percentage Value" change="onDecPriceChange" type="Number" value="{QuantityModel>/price1}"/>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+			<beginButton>
+		<Button press="onQuanSubmit" text="Submit"/>
+	</beginButton>
+    <endButton>
+    <Button press="onQuanClose" text="Close"/>
+    </endButton>
+	</Dialog>
+
+</core:FragmentDefinition>

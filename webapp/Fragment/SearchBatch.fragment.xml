@@ -1,0 +1,60 @@
+<core:FragmentDefinition
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:l="sap.ui.layout" 
+     xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	xmlns:core="sap.ui.core">
+	<Dialog title="ISBN / Batch Search" >
+        <content>
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSISBN">
+			<fb:filterGroupItems>
+				<fb:FilterGroupItem groupName="ZISBN" name="A" label="ISBN" partOfCurrentVariant="true" visibleInFilterBar="true">
+					<fb:control>
+                        <Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem groupName="MAKTG" name="B" label="ISBN Description"  visibleInFilterBar="true">
+					<fb:control>
+						<Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+				<fb:FilterGroupItem groupName="AUFNR" groupTitle="Group1" name="A1" label="Batch" visibleInFilterBar="true">
+					<fb:control>
+						<Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+
+			</fb:filterGroupItems>
+
+	    </fb:FilterBar>
+        <Table id="idTableVHSISBN" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/ISBNBatchSet}" growing="true" growingThreshold="100">
+            <columns>
+                <Column >
+                    <Label text="ISBN"/>
+                </Column>
+                <Column >
+                    <Label text="ISBN Description"/>
+                </Column>
+                <Column >
+                    <Label text="Batch"/>
+                </Column>
+                  <Column >
+                    <Label text="Company Code"/>
+                </Column>
+            </columns>
+            <ColumnListItem type="Navigation" press="onValueHelpISBNLineItemPress" cd:mdl="{HImdl>/mdlName}">
+                <cells >
+                    <Text text="{valuehelp>ZISBN}" />
+                    <Text text="{valuehelp>MAKTG}" />
+                    <Text text="{valuehelp>AUFNR}" />
+                     <Text text="{valuehelp>BUKRS}" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        </content>
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
+	</Dialog>
+</core:FragmentDefinition>

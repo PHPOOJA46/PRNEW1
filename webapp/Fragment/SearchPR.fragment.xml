@@ -2,39 +2,46 @@
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	xmlns:l="sap.ui.layout" 
 	xmlns:core="sap.ui.core">
-	<Dialog title="Internal/Cont Order Search" >
+	<Dialog title="Created By Search" >
         <content>
             <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
 			<fb:filterGroupItems>
-				<fb:FilterGroupItem groupName="G1" name="A" label="Internal Order" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="G1" name="A" label="Created BY" partOfCurrentVariant="true" visibleInFilterBar="true">
 					<fb:control>
                         <Input type="Text"/>
 					</fb:control>
 				</fb:FilterGroupItem>
 
-				<fb:FilterGroupItem groupName="G1" name="B" label="Description"  visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="G1" name="B" label="FIRST Name"  visibleInFilterBar="true">
 					<fb:control>
 						<Input type="Text"/>
 					</fb:control>
 				</fb:FilterGroupItem>
 
+				<fb:FilterGroupItem groupName="G1"  name="A1" label="Last Name" visibleInFilterBar="true">
+					<fb:control>
+						<Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
+                <fb:FilterGroupItem groupName="G1"  name="A2" label="Fullname" visibleInFilterBar="true">
+					<fb:control>
+						<Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>
 			</fb:filterGroupItems>
 
 	    </fb:FilterBar>
-        <Table>
+        <Table sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" >
             <columns>
                 <Column >
-                    <Label text="Internal Order"/>
+                    <Label text="Created By"/>
                 </Column>
-                <Column >
-                    <Label text="Description"/>
-                </Column>
-                
+               
             </columns>
             <ColumnListItem type="Navigation" press="onLineItemPress">
                 <cells >
                     <Text text="ABC" />
-                    <Text text="ABC" />
+                   
                 </cells>
             </ColumnListItem>
         </Table>

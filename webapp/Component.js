@@ -20,6 +20,13 @@ sap.ui.define([
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
             window.lineitem = "";
+            window.lineno = "";
+            window.items = [];
+            window.plants = "";
+            window.accountassign = "";
+            window.GLAccount = "";
+            window.Close = "";
+            window.lastlinekey = "";
 			// enable routing
 			this.getRouter().initialize();
 

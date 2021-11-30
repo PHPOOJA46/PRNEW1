@@ -1,18 +1,19 @@
 <core:FragmentDefinition
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	xmlns:l="sap.ui.layout" 
 	xmlns:core="sap.ui.core">
 	<Dialog title="Unit of Measure" >
         <content>
-            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSUOM">
 			<fb:filterGroupItems>
-				<fb:FilterGroupItem groupName="G1" name="A" label="Measure Unit" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="MSEHI" name="A" label="Measure Unit" partOfCurrentVariant="true" visibleInFilterBar="true">
 					<fb:control>
                         <Input type="Text"/>
 					</fb:control>
 				</fb:FilterGroupItem>
 
-				<fb:FilterGroupItem groupName="G1" name="B" label="Measure Unit Text"  visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="MSEHL" name="B" label="Measure Unit Text"  visibleInFilterBar="true">
 					<fb:control>
 						<Input type="Text"/>
 					</fb:control>
@@ -21,7 +22,7 @@
 			</fb:filterGroupItems>
 
 	    </fb:FilterBar>
-        <Table>
+          <Table id="idTableVHSUOM1" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{MeasureHelp>/results}" growing="true" growingThreshold="100">
             <columns>
                 <Column >
                     <Label text="Measure Unit"/>
@@ -31,14 +32,33 @@
                 </Column>
                 
             </columns>
-            <ColumnListItem type="Navigation" press="onLineItemPress">
+            <ColumnListItem type="Navigation" press="onValueHelpUOMLineItemPress" cd:mdl="{HImdl>/mdlName}">
                 <cells >
-                    <Text text="ABC" />
-                    <Text text="ABC" />
+                    <Text text="{MeasureHelp>MSEHI}" />
+                    <Text text="{MeasureHelp>MSEHL}" />
+                </cells>
+            </ColumnListItem>
+        </Table>
+        <Table id="idTableVHSUOM" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/UOMSet}" growing="true" growingThreshold="100">
+            <columns>
+                <Column >
+                    <Label text="Measure Unit"/>
+                </Column>
+                <Column >
+                    <Label text="Measure Unit Text"/>
+                </Column>
+                
+            </columns>
+            <ColumnListItem type="Navigation" press="onValueHelpUOMLineItemPress" cd:mdl="{HImdl>/mdlName}">
+                <cells >
+                    <Text text="{valuehelp>MSEHI}" />
+                    <Text text="{valuehelp>MSEHL}" />
                 </cells>
             </ColumnListItem>
         </Table>
         </content>
-		
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
 	</Dialog>
 </core:FragmentDefinition>

@@ -5,42 +5,67 @@
     xmlns="sap.m"
      xmlns:fb="sap.ui.comp.filterbar" xmlns:f="sap.f"
      xmlns:l="sap.ui.layout"
+      xmlns:core="sap.ui.core"
 >
-	<Shell >
+	<!--<Shell >
 		<App>
-			<pages>
+			<pages>-->
 				<Page id="page1" title="{i18n>title1}" showNavButton="true" navButtonPress="onBack">
 					<content>
                     <l:VerticalLayout width="100%">
 
-							<fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+							<fb:FilterBar reset="onReset" search="_onObjectMatched" showRestoreButton="true" showClearButton="true">
 								<fb:filterGroupItems>
 									<fb:FilterGroupItem groupName="SolmanFilter" name="PR Number" label="PR Number" partOfCurrentVariant="true" visibleInFilterBar="true">
 										<fb:control>
-											<Input id="inputValueHelpCustomIcon" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+											<Input id="PRNo" class="sapUiTinyMarginBottom" type="Number" />
 										</fb:control>
 									</fb:FilterGroupItem>
 									<fb:FilterGroupItem groupName="SolmanFilter" name="B" label="Vendor" labelTooltip="Tooltip Example" partOfCurrentVariant="true"
 										visibleInFilterBar="true">
 										<fb:control>
-											<Input id="inputValueHelpCustomIcon1" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
+											<Input id="Vendor" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true" valueHelpRequest="handleVendorHelp"/>
 										</fb:control>
 									</fb:FilterGroupItem>
 									<fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="true" groupTitle="Group1" name="A1" label="Status">
 										<fb:control>
-											<Input id="inputValueHelpCustomIcon2" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-										</fb:control>
+											 <ComboBox id="Status" items="{oComboModel>/}">
+                                                <core:Item key="{oComboModel>OBJKEY}" text="{oComboModel>OBJVAL}"/>
+                                            </ComboBox>
+                                            </fb:control>
 									</fb:FilterGroupItem>
 									<fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="true" name="B1" label="Created on">
 										<fb:control>
                                         <DatePicker change="onSearch" id="CreatedOn" displayFormat="dd.MM.yyyy" valueFormat="yyyy-MM-dd"></DatePicker>
 										</fb:control>
 									</fb:FilterGroupItem>
-								
+
+                                   <fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="false" name="B2" label="Profit Center">
+										<fb:control>
+                                        	<Input id="profit" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true" valueHelpRequest="handleProfitCenterHelp"/>
+										
+                                      </fb:control>
+									</fb:FilterGroupItem>
+								 <fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="false" name="B3" label="Cost Center">
+										<fb:control>
+                                        	<Input id="costcenter" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true"  valueHelpRequest="handleCostCenterValueHelp"/>
+										
+                                      </fb:control>
+									</fb:FilterGroupItem>
 								</fb:filterGroupItems>
 							</fb:FilterBar>
 						</l:VerticalLayout>
-						<Table  items="{PRListModel>/results}" >
+                       
+                        	<ScrollContainer vertical="true" height="70%">
+						<Table id="PRDisplay" inset="false" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" mode="MultiSelect" items="{PRListModel>/results}" growingThreshold="100" growing="true">
+                        	<headerToolbar>
+				<OverflowToolbar>
+					<ToolbarSpacer/>
+					<Button  text="Create" press="onCreatePR" visible="true" type="Emphasized"/>
+					<Button text="Copy" press="onPRCopy"  visible="true" type="Emphasized"/>
+				
+				</OverflowToolbar>
+			</headerToolbar>
 							<columns>
 								<Column >
 									<header><Text text="PR Number" class="cls-tableheader"/></header>
@@ -57,6 +82,10 @@
 								<Column  minScreenWidth="Tablet" demandPopin="true">
 									<header><Text class="cls-tableheader" text="Status"/></header>
 								</Column>
+
+                                	<Column  minScreenWidth="Tablet" demandPopin="true">
+									<header><Text class="cls-tableheader" text="PO Number"/></header>
+								</Column>
 							
 								<Column minScreenWidth="Tablet" demandPopin="true">
 									<header><Text class="cls-tableheader" text="Created By"/></header>
@@ -64,7 +93,12 @@
 								<Column  minScreenWidth="Tablet" demandPopin="true">
 									<header><Text class="cls-tableheader" text="Created on "/></header>
 								</Column>
-							
+							<Column  minScreenWidth="Tablet" demandPopin="true">
+									<header><Text class="cls-tableheader" text="Profit Center"/></header>
+								</Column>
+                                <Column  minScreenWidth="Tablet" demandPopin="true">
+									<header><Text class="cls-tableheader" text="Cost Center"/></header>
+								</Column>
 							</columns>
 							<items>
 								<ColumnListItem type="Navigation" press="onGo">
@@ -73,17 +107,23 @@
 										<Text text="{PRListModel>Txz01}"/>
 										 <Text text="{PRListModel>Elifn}"/>
 										<Text text="{PRListModel>Gswrt}"/>
-									   <Text text="{PRListModel>Estak}"/>
+									   <Text text="{PRListModel>Zestak}"/>
+                                       <Text text="{PRListModel>Ebeln}"/>
 										<Text text="{PRListModel>Erfuser}"/>
 										<Text text="{path:'PRListModel>Erfdate',type:'sap.ui.model.type.Date',formatOptions:{pattern:'dd.MM.yyyy'}}"/>
-									</cells>
+									<Text text="{PRListModel>Prctr}"/>
+                                    <Text text="{PRListModel>Kostl}"/>
+                                    </cells>
 								</ColumnListItem>
 							</items>
 						</Table>
                       
+                     </ScrollContainer>
+                    
+                    
                     </content>
 				</Page>
-			</pages>
+		<!--</pages>
 		</App>
-	</Shell>
+	</Shell>-->
 </mvc:View>

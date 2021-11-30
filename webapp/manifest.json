@@ -19,6 +19,22 @@
                     "odataVersion": "2.0",
                     "localUri": "localService/metadata.xml"
                 }
+            },
+             "ValueHelp": {
+                "uri": "/sap/opu/odata/sap/ZP2P_SHELP_SRV",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "2.0",
+                    "localUri": "localService/metadata.xml"
+                }
+            },
+            "Attachment": {
+                "uri": "/sap/opu/odata/sap/ZP2P_ATTACHMENT_SRV",
+                "type": "OData",
+                "settings": {
+                    "odataVersion": "2.0",
+                    "localUri": "localService/metadata.xml"
+                }
             }
         },
         "crossNavigation": {
@@ -84,6 +100,14 @@
             "": {
                 "dataSource": "mainService",
                 "preload": true
+            },
+              "valuehelp": {
+                "dataSource": "ValueHelp",
+                "preload": true
+            },
+            "attachment": {
+                "dataSource": "Attachment",
+                "preload": true
             }
         },
         "resources": {
@@ -122,7 +146,7 @@
                 },
                  {
                     "name": "PRPreview",
-                    "pattern": "PRPreview/{PRPreview}",
+                    "pattern": "PRPreview/{PRPreview},{PRCopy}",
                     "titleTarget": "",
                     "greedy": false,
                     "target": [
@@ -134,21 +158,20 @@
                 "TargetPRCreation": {
                     "viewType": "XML",
                     "transition": "slide",
-                    "clearControlAggregation": false,
-                    "viewId": "PRCreation",
+                    "clearControlAggregation": true,
                     "viewName": "PRCreation"
                 },
                  "PRDisplay": {
                     "viewType": "XML",
                     "transition": "slide",
-                    "clearAggregation": false,
-                    "viewName": "PRDisplay",
-                    "viewId": "PRDisplay"
+                     "clearControlAggregation": true,
+                    "viewName": "PRDisplay"
+    
                 },
                 "PRPreview": {
                     "viewType": "XML",
                     "transition": "slide",
-                    "clearAggregation": false,
+                     "clearControlAggregation": true,
                     "viewName": "PRPreview",
                     "viewId": "PRPreview"
                 }

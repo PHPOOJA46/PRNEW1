@@ -6,15 +6,22 @@
 				emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false" singleContainerFullSize="false">
 				<f:content>
 					<core:Title text=""/>
-					<Label text="Internal Comments" visible="true"/>
-					<TextArea value="{PRHeaderModel>/Text}"/>
-					<Label text="Vendor for Requisition" visible="true"/>
-					<Input value="{PRHeaderModel>/Elifn}" type="Text" showValueHelp="true"  valueHelpRequest="handleVendorHelp"/>
-					<Label text="Total Requisition Value" visible="true"/>
+					<Label text="Internal Comments"  visible="true"/>
+					<TextArea value="{PRHeaderModel>/Text}" liveChange="onChangeError" id="idIternalComm"/>
+					<Label text="Vendor for Requisition" required="true" visible="true"/>
+					<Input id="idVenReq" selectedKey="{PRHeaderModel>/Elifn}" textFormatMode="KeyValue" type="Text"   showValueHelp="true" valueHelpOnly="true"  showSuggestion="true" 	suggestionItems="{valuehelp>/VandorSet}"  valueHelpRequest="handleVendorHelp">
+                                    	<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>LIFNR}"
+					text="{valuehelp>NAME1}"
+				 />
+			</suggestionItems>
+            	</Input>
+                    <Label text="Total Requisition Value" visible="true"/>
 					<Input value="{PRLineItemModel>/Rlwrt}"/>
 					<core:Title text=""/>
-					<Label class="cls-coding1" text="Currency of Requisition" visible="true"/>
-                    <Input class="cls-coding1" value="{PRHeaderModel>/Waers}" type="Text" showValueHelp="true" valueHelpRequest="handleCurrencyHelp"/>
+					<Label class="cls-coding1" text="Currency of Req" required="true" visible="true"/>
+                    <Input class="cls-coding1" value="{PRHeaderModel>/Waers}" type="Text" id="idCurr"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleCurrencyHelp"/>
 					
 				</f:content>
 			</f:SimpleForm>
@@ -30,26 +37,33 @@
 				singleContainerFullSize="false">
 				<f:content>
 					<core:Title text=""/>
-					<Label text="Req Item no" visible="true"/>
-					<ComboBox selectionChange="onLineItemSelect" value="{PRLineItemModel>/Bnfpo}" items="{PRLineModel>/}" 	 >
+					<Label text="Req Item no" required="true" visible="true"/>
+                 	<Select
+					forceSelection="true" 
+					selectedKey="{PRLineItemModel>/Bnfpo}"
+					change="onLineItemSelect"  id="idReqItemNo"  items="{PRLineModel>/}">
+					<core:Item key="{PRLineModel>Bnfpo}" text="{PRLineModel>Bnfpo}" />
+				</Select>
+					<!--<ComboBox selectionChange="onLineItemSelect" selectedKey="{PRLineItemModel>/Bnfpo}" id="idReqItemNo"  items="{PRLineModel>/}">
                     	<core:Item key="{PRLineModel>Bnfpo}" text="{PRLineModel>Bnfpo}" />
-                        </ComboBox>
-					<Label text="Item Description" visible="true"/>
-					<Input value="{PRLineItemModel>/Txz01}"/>
+                        </ComboBox>-->
+					<Label text="Item Description" required="true" visible="true"/>
+					<Input value="{PRLineItemModel>/Txz01}" liveChange="onChangeError" id="idItemdesc"/>
 					<Label text="Item Brief Description" visible="true"/>
-					<Input value="{PRLineItemModel>/Text}"
+					<Input value="{PRLineItemModel>/Text1}"
 					/>
-					<Label text="Item Quantity" visible="true"/>
-					<Input value="{PRLineItemModel>/Menge}"/>
-					<Label text="Delivery Location" visible="true"/>
-					<ComboBox value="{PRLineItemModel>/Land1}"/>
+					<Label text="Item Quantity" required="true" visible="true"/>
+					<Input value="{PRLineItemModel>/Menge}" id="idItemQnt" liveChange="liveChange1"   maxLength= "13"/>
+					<!--<ComboBox value="{PRLineItemModel>/Land1}"/>-->
+                    <!--<Button text="View Address" press="onDeliveryAddress"/>-->
 					<core:Title text=""/>
-					<Label class="cls-coding2" text="UOM" visible="true"/> 
-                    <Input class="cls-coding2" value="{PRLineItemModel>/Meins}" showValueHelp="true" valueHelpRequest="handleMeasureHelp"/>
-					<Text class="cls-textfrag1 cls-coding2 cls-coding3" text="Unit Price:"/>
-					<Input   class="cls-coding2"  value="{PRLineItemModel>/Peinh}"></Input>
-					<Label text="Delivery Date"/>
-					<DatePicker valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy" value="{PRLineItemModel>/Lfdat}"/>
+					<Label class="cls-coding2" text="UOM" required="true" visible="true"/> 
+                    <Input class="cls-coding2" value="{PRLineItemModel>/Meins}" liveChange="onChangeError" id="idUOM"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleMeasureHelp"/>
+					<Text class="cls-text1 cls-coding2 cls-coding3" text="Unit Price:"/>
+                    <!--<Label class="cls-textfrag1 cls-coding2 cls-coding3" required="true" text="Unit Price:"/>-->
+					<Input   class="cls-coding2"  value="{PRLineItemModel>/Peinh}" liveChange="liveChange" id="idUnitPrc"   maxLength= "5"></Input>
+					<Label text="Delivery Date" required="true"/>
+					<DatePicker valueFormat="yyyy-MM-dd" change="dateCheck" id="idDelDate" displayFormat="dd.MM.yyyy" value="{PRLineItemModel>/Lfdat}"/>
 				</f:content>
 			</f:SimpleForm>
 			<f:SimpleForm editable="true" title="Requisition Coding" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="5" labelSpanM="5"
@@ -57,39 +71,61 @@
 				singleContainerFullSize="false">
 				<f:content>
 					<core:Title text=""/>
-					<Label text="Req Coding Type" visible="true"/>
-                    <Input value="{PRLineItemModel>/Knttp}" type="Text" showValueHelp="true" valueHelpRequest=" handleCodingReqHelp"/>
-					<Label text="Cost Center" visible="true"/>
-					<Input value="{PRLineItemModel>/Kostl}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-					<Label text="Int/Cont Order" visible="true" />
-					<Input value="{PRLineItemModel>/Aufnr}" editable="false" showValueHelp="true" valueHelpRequest="handleIntOrderHelp"/>
-					<Label text="Profit Center" visible="true"/>
-					<ComboBox value="{PRLineItemModel>/Prctr}" editable="false"/>
-					<Label text="Purchase Group" visible="true"/>
-					<Input value="{PRLineItemModel>/Bkgrp}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-					<core:Title text=""/>
-					<Label/>
-					<Text/>
+					<Label text="Req Coding Type" required="true" visible="true"/>
+                    <ComboBox change="ReqCodingChange" id="idReqType" selectionChange="ReqCodingChange" items="{ReqModel>/results}" selectedKey="{PRLineItemModel>/Knttp}">
+                                                <core:Item key="{ReqModel>ACASIGNCAT}" text="{ReqModel>ATEXT}"/>
+                                            </ComboBox>
+                   <!-- <Input change="ReqCodingChange" name="{PRLineItemModel>/Bnfpo}" value="{PRLineItemModel>/Knttp}" type="Text"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest=" handleCodingReqHelp"/>-->
+					<Label required="true" text="Cost Center" visible="true"/>
+					<Input id="CostCenterFrag"
+                    value="{PRLineItemModel>/Kostl}" name="{PRLineItemModel>/Bnfpo}" type="Text"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleCostCenterValueHelp"/>
+					<Label  required="true" text="Int/Cont Order" visible="true" />
+					<Input id="IntOrderFrag" name="{PRLineItemModel>/Bnfpo}" value="{PRLineItemModel>/Aufnr}" editable="false"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleIntOrderHelp"/>
+					<Label  required="true" text="Profit Center" visible="true"/>
+                    <Input id="ProfitCenterFrag" value="{PRLineItemModel>/Prctr}" name="{PRLineItemModel>/Bnfpo}" type="Text"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleProfitCenterHelp"/>
+					
+					<!--<ComboBox id="ProfitCenterFrag" name="{PRLineItemModel>/Bnfpo}" value="{PRLineItemModel>/Prctr}" editable="false"/>-->
+					<Label    text="Purchase Group" visible="true" required="true"/>
+					<Input id="PurchaseFrag" selectedKey="{PRLineItemModel>/Bkgrp}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/PurchaseGroupSet}"  name="{PRLineItemModel>/Bnfpo}" type="Text"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePurchaseGroupHelp">
+					<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>EKGRP}"
+					text="{valuehelp>EKNAM}"
+					 />
+			</suggestionItems>
+            </Input>
+                    <core:Title text=""/>
 					<Label text="Employee No" visible="true"/>
-					<Input value="{PRLineItemModel>/Zzempno}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-					<Label text="ISBN"/>
-					<Input value="{PRLineItemModel>/Isbn}" editable="false"/>
-					<Label text="Batch"/>
-					<Input value="{PRLineItemModel>/Batch}" editable="false"/>
-					<Label text="Material Group" visible="true"/>
-					<Input value="{PRLineItemModel>/Matkl}" type="Text" showValueHelp="true" valueHelpRequest="handleValueHelp"/>
-				</f:content>
+					<Input value="{PRLineItemModel>/Zzempno}" name="{PRLineItemModel>/Bnfpo}" type="Text"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleEmployeeNoHelp"/>
+					<Label  required="true" text="ISBN"/>
+                    	<Input id="IsbnFrag" value="{PRLineItemModel>/Isbn}"  editable="false"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleIsbnISBNValueHelp" name="{PRLineItemModel>/Bnfpo}"/>
+					<!--<Input id="IsbnFrag" value="{PRLineItemModel>/Isbn}" editable="false"/>-->
+					<Label required="true" text="Batch"/>
+					<Input   id="BatchFrag" value="{PRLineItemModel>/Batch}" editable="false"/>
+                    <Label text="Delivery Location" visible="true"/>
+                     <Input type="Text" value="{PRLineItemModel>/Land1}"  showValueHelp="true"   valueHelpOnly="true"  valueHelpRequest="handleDeliveryLoc"/>
+					
+					<Label required="true" text="Material Group" visible="true"/>
+					<Input selectedKey="{PRLineItemModel>/Matkl}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/MaterialGroupSet}" id="idMatgrp" type="Text"  showValueHelp="true" valueHelpOnly="true"  name="{PRLineItemModel>/Bnfpo}" valueHelpRequest="handlePRMatValueHelp">
+				<suggestionItems>
+				<core:ListItem
+					key="{valuehelp>MATKL}"
+					text="{valuehelp>WGBEZ}"
+				 />
+			</suggestionItems>
+            </Input>
+                </f:content>
 			</f:SimpleForm>
 		</content>
   <Bar>
   <contentLeft>
-        <Button id="prSave" class="sapUiSmallMarginBeginEnd" text="Attachment" type="Accept" press="" visible="true"/>
-		<Button id="prSave23" text="Preview" type="Accept" press="onPreview" visible="true"/>
+        <Button id="prSave" class="sapUiSmallMarginBeginEnd" text="Attachment" type="Accept" press="onAttachment" visible="true"/>
+		<Button id="prSave23" text="Preview" type="Accept" press="onSaveSubmitPrew" visible="true"/>
 	</contentLeft>
 				<contentRight>
-		<Button press="onLineItemSave" class="sapUiSmallMarginEnd" id="arrLeft" visible="true" text="Save" type="Accept"/>
-		<Button press="onLineSubmit" class="sapUiSmallMarginEnd" id="arrLef3t" visible="true" text="Save and Submit" type="Accept"/>
-		<Button id="prCancel" icon="" class="sapUiSmallMarginEnd" type="Reject" text="Cancel" press="dialogClose" visible="true"/>
+		<Button press="onSaveSubmitPrew" class="sapUiSmallMarginEnd" id="arrLeft" visible="true" text="Save" type="Accept"/>
+		<Button press="onSaveSubmitPrew" class="sapUiSmallMarginEnd" id="arrLef3t" visible="true" text="Save and Submit" type="Accept"/>
+		<Button id="prCancel" icon="" class="sapUiSmallMarginEnd" type="Reject" text="Cancel" press="dialogClose12" visible="true"/>
 </contentRight>
 </Bar>
 	</Dialog>

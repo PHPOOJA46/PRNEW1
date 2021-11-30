@@ -1,44 +1,43 @@
 <core:FragmentDefinition
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	xmlns:l="sap.ui.layout" 
+    xmlns:cd="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	xmlns:core="sap.ui.core">
-	<Dialog title="Search Requisition Coding Type" >
+	<Dialog title="Requisition coding type Search" resizable="true" draggable="true" contentWidth="70%" >
         <content>
-            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+            <fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true" cd:id="idTableVHSCodeType">
 			<fb:filterGroupItems>
-				<fb:FilterGroupItem groupName="G1" name="A" label="Requisition Coding Type" partOfCurrentVariant="true" visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="ACASIGNCAT" name="A" label="Requisition Coding Type" partOfCurrentVariant="true" visibleInFilterBar="true">
 					<fb:control>
-                        <Input type="Text"/>
+                        <Input />
 					</fb:control>
 				</fb:FilterGroupItem>
 
-				<fb:FilterGroupItem groupName="G1" name="B" label="Requisition Coding"  visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="ATEXT" name="B" label="Requisition Coding"  visibleInFilterBar="true">
 					<fb:control>
-						<Input type="Text"/>
+						<Input />
 					</fb:control>
 				</fb:FilterGroupItem>
 
 			</fb:filterGroupItems>
 
 	    </fb:FilterBar>
-        <Table>
+        <Table id="idTableVHSCodeType" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" items="{valuehelp>/AccountACatSet}" growing="true" growingThreshold="100">
             <columns>
-                <Column >
+                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
                     <Label text="Requisition Coding Type"/>
                 </Column>
-                <Column >
-                    <Label text="Requisition Coding"/>
-                </Column>
-                
+               
             </columns>
-            <ColumnListItem type="Navigation" press="onLineItemPress">
+            <ColumnListItem type="Navigation" press="onValueHelpReqCodingLineItemPress" cd:mdl="{HImdl>/mdlName}">
                 <cells >
-                    <Text text="ABC" />
-                    <Text text="ABC" />
+                    <Text text="{valuehelp>ACASIGNCAT}" />                   
                 </cells>
             </ColumnListItem>
         </Table>
         </content>
-		
+		<beginButton>
+        <Button text="Cancel" press="OnCloseDialog" />
+        </beginButton>
 	</Dialog>
 </core:FragmentDefinition>

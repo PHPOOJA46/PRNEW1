@@ -1,0 +1,104 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified" xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<Dialog id="idPRCDialog" title="Header Details" stretch="true" afterOpen="onOpenDetailDialItem" contentWidth="80%">
+		<content>
+			<f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="5" labelSpanM="5" labelSpanS="12" emptySpanXL="0"
+				emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false" singleContainerFullSize="false">
+				<f:content>
+					<core:Title text=""/>
+					<Label text="Internal Comments" required="true" visible="true"/>
+					<TextArea value="{PRHeaderModel>/Text}"/>
+					<Label text="Vendor for Requisition" required="true" visible="true"/>
+					<Input value="{PRHeaderModel>/Elifn}" type="Text" showValueHelp="true"  valueHelpRequest="handleVendorHelp"/>
+					<Label text="Total Requisition Value" visible="true"/>
+					<Input value="{PRLineItemModel>/Rlwrt}"/>
+					<core:Title text=""/>
+					<Label class="cls-coding1" text="Currency of Requisition" visible="true"/>
+                    <Input id="Waers" class="cls-coding1" value="{PRHeaderModel>/Waers}" type="Text" showValueHelp="true" valueHelpRequest="handleCurrencyHelp"/>
+					
+				</f:content>
+			</f:SimpleForm>
+			<Bar>
+				<contentRight>
+					<!--<Button id="edit" text="Edit" press="handleEditPress"/>-->
+					<Button id="save" text="Add Line" press="onAddLineItemData"/>
+					<Button id="cancel" text="Remove" press="handleRemovePress"/>
+				</contentRight>
+			</Bar>
+			<f:SimpleForm editable="true" title="Item Details" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="5" labelSpanM="5"
+				labelSpanS="12" emptySpanXL="0" emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false"
+				singleContainerFullSize="false">
+				<f:content>
+					<core:Title text=""/>
+					<Label text="Req Item no" visible="true"/>
+					<ComboBox selectionChange="onLineItemSelect" value="{PRLineItemModel>/Bnfpo}" items="{valuehelp>/CurrencySet}" 	 >
+                    	<core:Item key="{PRLineModel>Bnfpo}" text="{PRLineModel>Bnfpo}" />
+                        </ComboBox>
+					<Label text="Item Description" visible="true"/>
+					<Input value="{PRLineItemModel>/Txz01}"/>
+					<Label text="Item Brief Description" visible="true"/>
+					<Input value="{PRLineItemModel>/Text}"
+					/>
+					<Label text="Item Quantity" visible="true"/>
+					<Input value="{PRLineItemModel>/Menge}"/>
+					<Label text="Delivery Location" visible="true"/>
+					<ComboBox value="{PRLineItemModel>/Land1}"/>
+                    <Button text="View Address" press="onDeliveryAddress"/>
+					<core:Title text=""/>
+					<Label class="cls-coding2" text="UOM" visible="true"/> 
+                    <Input class="cls-coding2" value="{PRLineItemModel>/Meins}" showValueHelp="true" valueHelpRequest="handleMeasureHelp"/>
+					<Text class="cls-textfrag1 cls-coding2 cls-coding3" text="Unit Price:"/>
+					<Input   class="cls-coding2"  value="{PRLineItemModel>/Peinh}"></Input>
+					<Label text="Delivery Date"/>
+					<DatePicker valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy" value="{PRLineItemModel>/Lfdat}"/>
+				</f:content>
+			</f:SimpleForm>
+			<f:SimpleForm editable="true" title="Requisition Coding" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="5" labelSpanM="5"
+				labelSpanS="12" emptySpanXL="0" emptySpanL="1" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" adjustLabelSpan="false"
+				singleContainerFullSize="false">
+				<f:content>
+					<core:Title text=""/>
+					<Label text="Req Coding Type" visible="true"/>
+                    <ComboBox change="ReqCodingChange" selectionChange="ReqCodingChange" items="{ReqModel>/results}" selectedKey="{PRLineItemModel>/Knttp}">
+                                                <core:Item key="{ReqModel>ACASIGNCAT}" text="{ReqModel>ATEXT}"/>
+                                            </ComboBox>
+                   <!-- <Input change="ReqCodingChange" name="{PRLineItemModel>/Bnfpo}" value="{PRLineItemModel>/Knttp}" type="Text" showValueHelp="true" valueHelpRequest=" handleCodingReqHelp"/>-->
+					<Label text="Cost Center" visible="true"/>
+					<Input id="CostCenterFrag"
+                    value="{PRLineItemModel>/Kostl}" name="{PRLineItemModel>/Bnfpo}" type="Text" showValueHelp="true" valueHelpRequest="handleCostCenterValueHelp"/>
+					<Label text="Int/Cont Order" visible="true" />
+					<Input id="IntOrderFrag" name="{PRLineItemModel>/Bnfpo}" value="{PRLineItemModel>/Aufnr}" editable="false" showValueHelp="true" valueHelpRequest="handleIntOrderHelp"/>
+					<Label text="Profit Center" visible="true"/>
+                    <Input id="ProfitCenterFrag" value="{PRLineItemModel>/Prctr}" name="{PRLineItemModel>/Bnfpo}" type="Text" showValueHelp="true" valueHelpRequest="handleProfitCenterHelp"/>
+					
+					<!--<ComboBox id="ProfitCenterFrag" name="{PRLineItemModel>/Bnfpo}" value="{PRLineItemModel>/Prctr}" editable="false"/>-->
+					<Label text="Purchase Group" visible="true"/>
+					<Input id="PurchaseFrag" value="{PRLineItemModel>/Bkgrp}" name="{PRLineItemModel>/Bnfpo}" type="Text" showValueHelp="true" valueHelpRequest="handlePurchaseGroupHelp"/>
+					<core:Title text=""/>
+					<Label/>
+					<Text/>
+					<Label text="Employee No" visible="true"/>
+					<Input value="{PRLineItemModel>/Zzempno}" name="{PRLineItemModel>/Bnfpo}" type="Text" showValueHelp="true" valueHelpRequest="handleEmployeeNoHelp"/>
+					<Label text="ISBN"/>
+                    	<Input id="IsbnFrag" value="{PRLineItemModel>/Isbn}"  editable="false" showValueHelp="true" valueHelpRequest="handleIsbnISBNValueHelp" name="{PRLineItemModel>/Bnfpo}"/>
+					<!--<Input id="IsbnFrag" value="{PRLineItemModel>/Isbn}" editable="false"/>-->
+					<Label text="Batch"/>
+					<Input id="BatchFrag" value="{PRLineItemModel>/Batch}" editable="false"/>
+					<Label text="Material Group" visible="true"/>
+					<Input value="{PRLineItemModel>/Matkl}" type="Text" showValueHelp="true" name="{PRLineItemModel>/Bnfpo}" valueHelpRequest="handlePRMatValueHelp"/>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+  <Bar>
+  <contentLeft>
+        <Button id="prSave" class="sapUiSmallMarginBeginEnd" text="Attachment" type="Accept" press="onAttachment" visible="true"/>
+		<Button id="prSave23" text="Preview" type="Accept" press="onPreview" visible="true"/>
+	</contentLeft>
+				<contentRight>
+		<Button press="onLineItemSave1" class="sapUiSmallMarginEnd" id="arrLeft" visible="true" text="Save" type="Accept"/>
+		<Button press="onLineSubmit" class="sapUiSmallMarginEnd" id="arrLef3t" visible="true" text="Save and Submit" type="Accept"/>
+		<Button id="prCancel" icon="" class="sapUiSmallMarginEnd" type="Reject" text="Cancel" press="dialogClose" visible="true"/>
+</contentRight>
+</Bar>
+	</Dialog>
+</core:FragmentDefinition>
