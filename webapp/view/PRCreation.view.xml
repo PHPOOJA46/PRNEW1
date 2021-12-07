@@ -20,7 +20,7 @@
 									<SegmentedButtonItem key="DispPr" width="44%" text="Display/Change PR"/>
 								</items>
 							</SegmentedButton>
-                          
+                          <Input visible="false" id="createpage" />
 						</VBox>
                         	<f:SimpleForm id="CreatePr"
                             editable="true" class="cls-simpleform" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="5" labelSpanS="12" emptySpanXL="0"
@@ -61,29 +61,31 @@
 								<Text class="cls-text2" text="UOM:"/>
                                 <Input  id="UOM" value="{PRHeaderModel>/Meins}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleMeasureHelp"/>
 								<Label required="true" text="Unit Price"/>
-                                <Input id="Price"  liveChange="liveChange"
-			      maxLength= "5" value="{
-   path: 'PRHeaderModel>/Peinh'
+                                	<!--<u:Currency stringValue="{price}" currency="{currency}" useSymbol="false" maxPrecision="3"/>-->
+                                <Input id="Price"  liveChange="liveChange" change="afterchange2"
+			      maxLength= "11" value="{
+   path: 'PRHeaderModel>/Preis'
+   
    
 }"/>
              <!-- <Input liveChange="formatprice1" value="{
-   path: 'PRHeaderModel>/Peinh',
+   path: 'PRHeaderModel>/Preis',
    type: 'new sap.ui.model.type.Float({
 	     		maxFractionDigits: 2  				
 			})'
 }" />-->
 
-								<!--<Input    id="Price" liveChange="formatprice" value="{path: 'PRHeaderModel>/Peinh'}"
+								<!--<Input    id="Price" liveChange="formatprice" value="{path: 'PRHeaderModel>/Preis'}"
 				 />-->
                                 <!--<ComboBox  value="{PRHeaderModel>/Land1}"/>-->
 								<Text class="cls-text4" text="Delivery Date:"/>
 								<DatePicker change="dateCheck"  id="DeliveryDate" value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
-								<Label required="true" text="Req Coding Type"/>
+								<Label  text="Req Coding Type"/>
                                  <ComboBox id="ReqCoding" change="ReqCodingChange" selectionChange="ReqCodingChange" items="{ReqModel>/results}" selectedKey="{PRHeaderModel>/Knttp}">
                                                 <core:Item key="{ReqModel>ACASIGNCAT}" text="{ReqModel>ATEXT}"/>
                                             </ComboBox>
 							  <!--<Input value="{PRHeaderModel>/Knttp}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest=" handleCodingReqHelp"/>-->
-								<Label required="true" text="Purchase Group"/>
+								<Label  text="Purchase Group"/>
 								<Input id='PurGroup'  selectedKey="{PRHeaderModel>/Bkgrp}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/PurchaseGroupSet}" type="Text"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePurchaseGroupHelp">
                                 
 <suggestionItems>
@@ -124,12 +126,12 @@
 			</suggestionItems>
 
 	</Input>
-                                <Label required="true" text="Req Coding Type"/>
+                                <Label  text="Req Coding Type"/>
                                   <ComboBox id="idReqCodingType" change="ReqCodingChange" selectionChange="ReqCodingChange" items="{ReqModel>/results}" selectedKey="{PRHeaderModel>/Knttp}">
                                                 <core:Item key="{ReqModel>ACASIGNCAT}" text="{ReqModel>ATEXT}"/>
                                             </ComboBox>
                                 <!--<Input value="{PRHeaderModel>/Knttp}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest=" handleCodingReqHelp"/>-->
-								<Label required="true" text="Material Group"/>
+								<Label  text="Material Group"/>
 								<Input id="idMaterialGroup" selectedKey="{PRHeaderModel>/Matkl}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/MaterialGroupSet}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePRMatValueHelp">
 									<suggestionItems>
 				<core:ListItem
@@ -149,7 +151,7 @@
                                 <Input id="idCurrency" value="{PRHeaderModel>/Waers}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleCurrencyHelp"/>
 								<Label required="true" text="Delivery Date"/>
 								<DatePicker change="dateCheck" id="idDeliveryDate" value="{PRHeaderModel>/Lfdat}" valueFormat="yyyy-MM-dd" displayFormat="dd.MM.yyyy"/>
-								<Label required="true" text="Purchase Group"/>
+								<Label text="Purchase Group"/>
 								<Input id="idPurchaseGroup" selectedKey="{PRHeaderModel>/Bkgrp}" textFormatMode="KeyValue" suggestionItems="{valuehelp>/PurchaseGroupSet}" type="Text" showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handlePurchaseGroupHelp">
 							<suggestionItems>
 				<core:ListItem

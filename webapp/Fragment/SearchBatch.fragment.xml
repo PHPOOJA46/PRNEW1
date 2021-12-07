@@ -19,7 +19,7 @@
 					</fb:control>
 				</fb:FilterGroupItem>
 
-				<fb:FilterGroupItem groupName="AUFNR" groupTitle="Group1" name="A1" label="Batch" visibleInFilterBar="true">
+				<fb:FilterGroupItem groupName="ZIMP" groupTitle="Group1" name="A1" label="Batch" visibleInFilterBar="true">
 					<fb:control>
 						<Input type="Text"/>
 					</fb:control>
@@ -47,7 +47,7 @@
                 <cells >
                     <Text text="{valuehelp>ZISBN}" />
                     <Text text="{valuehelp>MAKTG}" />
-                    <Text text="{valuehelp>AUFNR}" />
+                    <Text text="{valuehelp>ZIMP}" />
                      <Text text="{valuehelp>BUKRS}" />
                 </cells>
             </ColumnListItem>

@@ -6,7 +6,7 @@ sap.ui.define([
 	 */
     function (Controller) {
         "use strict";
-
+        //  var SortOrder =  sap.ui.table.SortOrder;
         return Controller.extend("zprcreatenew.controller.PRDisplay", {
             onInit: function () {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -15,19 +15,21 @@ sap.ui.define([
 
             _onObjectMatched: function (oevent) {
                 this.onValueHelp();
+                this._bSortColumnDescending = true;
                 var oMdl = this.getOwnerComponent().getModel();
-                window.lineitem = "";
+                this.getOwnerComponent().lineitem = "";
                 var aFilters = [];
                 var that = this;
                 var Stat = "";
-                window.lineitem = "";
-                window.lineno = "";
-                window.items = [];
-                window.plants = "";
-                window.accountassign = "";
-                window.GLAccount = "";
-                window.lastlinekey = "";
-                window.Close = "";
+                this.getOwnerComponent().lineitem = "";
+                this.getOwnerComponent().lineno = "";
+                this.getOwnerComponent().items = [];
+                this.getOwnerComponent().plants = "";
+                this.getOwnerComponent().accountassign = "";
+                this.getOwnerComponent().GLAccount = "";
+                this.getOwnerComponent().lastlinekey = "";
+                this.getOwnerComponent().Close = "";
+                this.getOwnerComponent().VendorName = "";
                 var PR = this.getView().byId("PRNo").getValue();
                 var CreatedDate = this.getView().byId("CreatedOn").getValue();
                 // var Stat = this.getView().byId("Status").getSelectedKey();
@@ -37,6 +39,8 @@ sap.ui.define([
                 var ProfitCenter = this.getView().byId("profit").getValue();
                 var CostCenter = this.getView().byId("costcenter").getValue();
                 var Vendor = this.getView().byId("Vendor").getValue();
+                var Isbn = this.getView().byId("isbn").getValue();
+                var IntOrder = this.getView().byId("Internalorder").getValue();
                 if (PR !== "") {
                     aFilters.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, PR));
                 }
@@ -58,13 +62,13 @@ sap.ui.define([
                 if (CostCenter !== "") {
                     aFilters.push(new sap.ui.model.Filter("Kostl", sap.ui.model.FilterOperator.EQ, CostCenter));
                 }
+                if (Isbn !== "") {
+                    aFilters.push(new sap.ui.model.Filter("Isbn", sap.ui.model.FilterOperator.EQ, Isbn));
+                }
+                if (IntOrder !== "") {
+                    aFilters.push(new sap.ui.model.Filter("Aufnr", sap.ui.model.FilterOperator.EQ, IntOrder));
+                }
 
-
-                /*   aFilters.push(new sap.ui.model.Filter("Erfdate", sap.ui.model.FilterOperator.EQ, sMatdocno));
-                   aFilters.push(new sap.ui.model.Filter("Elifn", sap.ui.model.FilterOperator.EQ, sMatdocno));
-                   aFilters.push(new sap.ui.model.Filter("Banfn", sap.ui.model.FilterOperator.EQ, sMatdocno));
-                   aFilters.push(new sap.ui.model.Filter("Estak", sap.ui.model.FilterOperator.EQ, sMatdocno));
-   */
                 oMdl.read("/PRSearchSet", {
                     filters: aFilters,
                     success: function (oData) {
@@ -103,6 +107,16 @@ sap.ui.define([
                 this.getOwnerComponent().getRouter().navTo("RoutePRCreation");
             },*/
 
+            handleSortButtonPressed: function (oEvent) {
+                var oTable = this.getView().byId("PRDisplay");
+                var oItems = oTable.getBinding("items");
+                var aSorters = [];
+                var bDescending = this._bSortColumnDescending ? true : false;
+                aSorters.push(new sap.ui.model.Sorter("Banfn", bDescending));
+                oItems.sort(aSorters);
+                this._bSortColumnDescending = !this._bSortColumnDescending;
+            },
+
             onGo: function (oEvent) {
                 var PRNo = oEvent.getSource().getBindingContext("PRListModel").getObject().Banfn;
                 this.getOwnerComponent().getRouter().navTo("PRPreview", {
@@ -120,7 +134,7 @@ sap.ui.define([
             onValueHelpVendorLineItemPress: function (evt) {
                 sap.ui.controller("zprcreatenew.controller.BaseController").onValueHelpVendorLineItemPress(evt, this);
             },
-            onCreatePR:function(){
+            onCreatePR: function () {
                 var tat = this;
                 sap.m.MessageBox.warning("Do you want to create new PR ?", {
                     actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
@@ -135,16 +149,16 @@ sap.ui.define([
             //pratik changes
             onBack: function () {
                 this.getOwnerComponent().getRouter().navTo("RoutePRCreation");
-              /*  var tat = this;
-                sap.m.MessageBox.warning("Do you want to navigate back ?", {
-                    actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
-                    emphasizedAction: sap.m.MessageBox.Action.OK,
-                    onClose: function (sAction) {
-                        if (sAction === "OK") {
-                            tat.getOwnerComponent().getRouter().navTo("RoutePRCreation");
-                        }
-                    }
-                });*/
+                /*  var tat = this;
+                  sap.m.MessageBox.warning("Do you want to navigate back ?", {
+                      actions: [sap.m.MessageBox.Action.OK, sap.m.MessageBox.Action.CANCEL],
+                      emphasizedAction: sap.m.MessageBox.Action.OK,
+                      onClose: function (sAction) {
+                          if (sAction === "OK") {
+                              tat.getOwnerComponent().getRouter().navTo("RoutePRCreation");
+                          }
+                      }
+                  });*/
             },
 
             onPRCopy: function (oEvent) {

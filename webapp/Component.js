@@ -19,19 +19,23 @@ sap.ui.define([
 		init: function () {
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
-            window.lineitem = "";
-            window.lineno = "";
-            window.items = [];
-            window.plants = "";
-            window.accountassign = "";
-            window.GLAccount = "";
-            window.Close = "";
-            window.lastlinekey = "";
+            this.lineitem = "";
+            this.lineno = "";
+            this.items = [];
+            this.plants = "";
+            this.accountassign = "";
+            this.GLAccount = "";
+            this.Close = "";
+            this.lastlinekey = "";
+            this.VendorName = "";
+            this.errormsg = "";
 			// enable routing
 			this.getRouter().initialize();
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
+            //this.abc = "123";
 		}
+     
 	});
 });

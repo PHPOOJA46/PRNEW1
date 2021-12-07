@@ -21,7 +21,7 @@
 									<SegmentedButtonItem key="DispPr" width="44%" text="Display/Change PR"/>
 								</items>
 							</SegmentedButton>
-                          
+                           <Input visible="false" id="previewpage" />
 						</VBox>
                         <core:Fragment fragmentName="zprcreatenew.Fragment.PR" type="XML"/>
 					

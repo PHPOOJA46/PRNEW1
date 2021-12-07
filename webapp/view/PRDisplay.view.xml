@@ -21,12 +21,14 @@
 											<Input id="PRNo" class="sapUiTinyMarginBottom" type="Number" />
 										</fb:control>
 									</fb:FilterGroupItem>
+
 									<fb:FilterGroupItem groupName="SolmanFilter" name="B" label="Vendor" labelTooltip="Tooltip Example" partOfCurrentVariant="true"
 										visibleInFilterBar="true">
 										<fb:control>
 											<Input id="Vendor" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true" valueHelpRequest="handleVendorHelp"/>
 										</fb:control>
 									</fb:FilterGroupItem>
+
 									<fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="true" groupTitle="Group1" name="A1" label="Status">
 										<fb:control>
 											 <ComboBox id="Status" items="{oComboModel>/}">
@@ -34,6 +36,7 @@
                                             </ComboBox>
                                             </fb:control>
 									</fb:FilterGroupItem>
+
 									<fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="true" name="B1" label="Created on">
 										<fb:control>
                                         <DatePicker change="onSearch" id="CreatedOn" displayFormat="dd.MM.yyyy" valueFormat="yyyy-MM-dd"></DatePicker>
@@ -43,13 +46,24 @@
                                    <fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="false" name="B2" label="Profit Center">
 										<fb:control>
                                         	<Input id="profit" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true" valueHelpRequest="handleProfitCenterHelp"/>
-										
                                       </fb:control>
 									</fb:FilterGroupItem>
+
 								 <fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="false" name="B3" label="Cost Center">
 										<fb:control>
                                         	<Input id="costcenter" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true"  valueHelpRequest="handleCostCenterValueHelp"/>
-										
+                                      </fb:control>
+									</fb:FilterGroupItem>
+
+                                    <fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="false" name="B4" label="ISBN">
+										<fb:control>
+                                        	<Input id="isbn" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true"  valueHelpRequest="handleIsbnBatchValueHelp"/>
+                                      </fb:control>
+									</fb:FilterGroupItem>
+
+                                      <fb:FilterGroupItem groupName="SolmanFilter" visibleInFilterBar="false" name="B5" label="Internal Order">
+										<fb:control>
+                                        	<Input id="Internalorder" class="sapUiTinyMarginBottom" type="Text" showValueHelp="true"  valueHelpRequest="handleIntOrderHelp"/>
                                       </fb:control>
 									</fb:FilterGroupItem>
 								</fb:filterGroupItems>
@@ -57,9 +71,15 @@
 						</l:VerticalLayout>
                        
                         	<ScrollContainer vertical="true" height="70%">
-						<Table id="PRDisplay" inset="false" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" mode="MultiSelect" items="{PRListModel>/results}" growingThreshold="100" growing="true">
+						<Table id="PRDisplay" inset="false" sticky="ColumnHeaders,HeaderToolbar,InfoToolbar" mode="MultiSelect" items="{
+                            	path: 'PRListModel>/results'
+						}" growingThreshold="100" growing="true">
                         	<headerToolbar>
 				<OverflowToolbar>
+                	<Button
+							tooltip="Sort"
+							icon="sap-icon://sort"
+							press="handleSortButtonPressed"/>
 					<ToolbarSpacer/>
 					<Button  text="Create" press="onCreatePR" visible="true" type="Emphasized"/>
 					<Button text="Copy" press="onPRCopy"  visible="true" type="Emphasized"/>
@@ -67,7 +87,7 @@
 				</OverflowToolbar>
 			</headerToolbar>
 							<columns>
-								<Column >
+								<Column id="PRNoCol">
 									<header><Text text="PR Number" class="cls-tableheader"/></header>
 								</Column>
 								<Column  minScreenWidth="Tablet" demandPopin="true">
@@ -93,12 +113,12 @@
 								<Column  minScreenWidth="Tablet" demandPopin="true">
 									<header><Text class="cls-tableheader" text="Created on "/></header>
 								</Column>
-							<Column  minScreenWidth="Tablet" demandPopin="true">
+						<!--<Column  minScreenWidth="Tablet" demandPopin="true">
 									<header><Text class="cls-tableheader" text="Profit Center"/></header>
 								</Column>
                                 <Column  minScreenWidth="Tablet" demandPopin="true">
 									<header><Text class="cls-tableheader" text="Cost Center"/></header>
-								</Column>
+								</Column>-->
 							</columns>
 							<items>
 								<ColumnListItem type="Navigation" press="onGo">
@@ -111,8 +131,8 @@
                                        <Text text="{PRListModel>Ebeln}"/>
 										<Text text="{PRListModel>Erfuser}"/>
 										<Text text="{path:'PRListModel>Erfdate',type:'sap.ui.model.type.Date',formatOptions:{pattern:'dd.MM.yyyy'}}"/>
-									<Text text="{PRListModel>Prctr}"/>
-                                    <Text text="{PRListModel>Kostl}"/>
+									<!--<Text text="{PRListModel>Prctr}"/>
+                                    <Text text="{PRListModel>Kostl}"/>-->
                                     </cells>
 								</ColumnListItem>
 							</items>

@@ -52,10 +52,10 @@
 	 color: #6a6d70;
 }
 
-.cls-text5:after{
+/*.cls-text5:after{
     content: "*";
     color: red;
-}
+}*/
 
 .sapMBarTitleAlignAuto .sapMBarPH {
     justify-content: center!important;

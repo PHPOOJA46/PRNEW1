@@ -6,8 +6,8 @@
 		<f:content>
 			<Label id="PRFrag" text="PR No"/>
 			<Text text="{PRPreviewModel>/Banfn}"/>
-			<Label text="Delivery Country"/>
-			<Text id="delcountry" text="{PRPreviewModel>/HdrToItemNav/results/0/Land1}" />
+			<!--<Label text="Delivery Country"/>
+			<Text id="delcountry" text="{PRPreviewModel>/HdrToItemNav/results/0/Land1}" />-->
 			<Label text="Internal Header Note"/>
 			<Text text="{PRPreviewModel>/Text}"/>
 			<core:Title text=""/>
@@ -19,11 +19,13 @@
 			<Text text="{PRPreviewModel>/Zestak}"/>
 			<core:Title text=""/>
 			<Label text="Vendor"/>
-			<Text text="{PRPreviewModel>/Elifn}"/>
-			<Label text="Total PO Amount"/>
+			<Text text="{PRPreviewModel>/Elifn}-{PRPreviewModel>/Name1}"/>
+			<Label text="Total PR Amount"/>
 			<Text text="{PRPreviewModel>/Rlwrt}"/>
 				<core:Title text=""/>
-				<Label text=""/>
+				<!--<Label text="Vendor Name"/>
+			<Text text="{PRPreviewModel>/Name1}"/>-->
+            <Label text=""/>
 			<Text text=""/>
 			<Label text="Currency"/>
 			<Text text="{PRPreviewModel>/Waers}"/>
@@ -37,9 +39,9 @@
 					<CheckBox id="chckbox" select="onCodingSelect" class="sapUiMediumMarginBegin" text="View Coding Details"/>
 					<ToolbarSpacer/>
 				
-					<Button icon="sap-icon://add" text="{i18n>Add}" press="onCodingDetail" visible="true" type="Reject"/>
-					<Button icon="sap-icon://edit" text="Edit" press="onPREdit"  visible="true" type="Reject"/>
-					<Button icon="sap-icon://delete" text="Delete" press="onPRLineDelete" visible="true"  type="Reject"/>
+					<Button id="Addpr" icon="sap-icon://add" text="{i18n>Add}" press="onPRCodingDetail" visible="true" type="Reject"/>
+					<Button id="editpr" icon="sap-icon://edit" text="Edit" press="onPREdit"  visible="true" type="Reject"/>
+					<Button id="delpr" icon="sap-icon://delete" text="Delete" press="onPRLineDelete" visible="true"  type="Reject"/>
 				</OverflowToolbar>
 			</headerToolbar>
 			<columns>
@@ -59,8 +61,13 @@
 						<Text class="cls-white" text="Item Description"/>
 					</header>
 				</Column>
-				<!-- <Column width="80px"> <header> <Text text="Value" /> </header> 
-								</Column> -->
+			
+             <Column>
+              <header>
+              <Text text="Item brief desc" /> 
+              </header> 
+			</Column> 
+
 		<Column>
 					<header>
 						<Text  class="cls-white" text="Quantity"/>
@@ -84,6 +91,11 @@
 				<Column>
 					<header>
 						<Text class="cls-white" text="Delivery Date"/>
+					</header>
+				</Column>
+                <Column>
+					<header>
+						<Text class="cls-white" text="Delivery Country"/>
 					</header>
 				</Column>
 				<Column>
@@ -115,13 +127,18 @@
 			<items>
 				<ColumnListItem press="onDetailItemPress">
 					<cells>
-						<Text text="{PRPreviewModel>Bnfpo} "/>
+                    	<Text text="{path: 'PRPreviewModel>Bnfpo',
+                              formatter:'.formatter.formatSno'} "/>
 						<Text text="{path: 'PRPreviewModel>Knttp',
-  formatter:'.formatter.getReqCodingText'} "/>
+                              formatter:'.formatter.getReqCodingText'} "/>
 						<Text text="{PRPreviewModel>Txz01}"/>
+                        <core:Icon
+			src="sap-icon://show"
+            press="onItemdesc"
+			/>
 						<Text text="{PRPreviewModel>Menge}"/>
 						<Text text="{PRPreviewModel>Meins} "/>
-						<Text text="{PRPreviewModel>Peinh} "/>
+						<Text text="{PRPreviewModel>Preis} "/>
 						<Text text="{PRPreviewModel>Gswrt}"/>
                         <Text  text="{ 
 
@@ -131,7 +148,7 @@
                        
                       />
 						
-                       
+                         <Text text="{PRPreviewModel>Land1}"/>
                   
 						<Text text="{PRPreviewModel>Matkl}"/>
 						<Text text="{PRPreviewModel>Bkgrp} "/>
@@ -194,7 +211,8 @@
 							<items>
 								<ColumnListItem  press="onDetailItemPress">
 									<cells>
-									<Text text="{PRPreviewModel>Bnfpo} "/>
+									<Text text="{path: 'PRPreviewModel>Bnfpo',
+                              formatter:'.formatter.formatSno'} "/>
 					<Text text="{PRPreviewModel>Kostl}"/>
 					<Text text="{PRPreviewModel>Aufnr}"/>
 					<Text text="{PRPreviewModel>Zzempno} "/>

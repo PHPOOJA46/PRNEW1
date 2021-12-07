@@ -25,6 +25,12 @@
 					</fb:control>
 				</fb:FilterGroupItem>
 
+                	<!--<fb:FilterGroupItem groupName="BUKRS" groupTitle="Group1" name="A2" label="Company Code" visibleInFilterBar="true">
+					<fb:control>
+						<Input type="Text"/>
+					</fb:control>
+				</fb:FilterGroupItem>-->
+
 			</fb:filterGroupItems>
 
 	    </fb:FilterBar>

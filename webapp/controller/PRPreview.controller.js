@@ -7,7 +7,7 @@ sap.ui.define([
 	 */
     function (Controller, formatter) {
         "use strict";
-        var aLineItemArr = [], SubmitFlag = ""; var DeleteArray = [], PRNo, PRCopy;
+        var aLineItemArr = [], SubmitFlag = ""; var DeleteArray = [], TotArr = [], PRNo, PRCopy, checkArr = [];
         return Controller.extend("zprcreatenew.controller.PRPreview", {
             formatter: formatter,
             onInit: function () {
@@ -19,7 +19,7 @@ sap.ui.define([
 
                 PRNo = oEvent.getParameter("arguments").PRPreview;
                 PRCopy = oEvent.getParameter("arguments").PRCopy;
-                window.lastlinekey = "";
+                this.getOwnerComponent().lastlinekey = "";
                 DeleteArray = [];
                 this.fillReqCoding();
                 this.onValueHelp();
@@ -27,7 +27,7 @@ sap.ui.define([
                 this.getView().byId("chckbox").setSelected(false);
                 this.getView().byId("CodingDetails").setVisible(false);
                 var oModel = new sap.ui.model.json.JSONModel();
-                // window.items = [];
+                // this.getOwnerComponent().items = [];
                 SubmitFlag = "";
                 this.onAttClose1();
                 this.AttDestroy1();
@@ -39,14 +39,6 @@ sap.ui.define([
                     /* this.getView().byId("Date1").setVisible(false);
                      this.getView().byId("Date2").setVisible(true);*/
                     this.onCheckOpenAttachment();
-
-                    window.lineitem = "";
-                    window.items = [];
-                    window.lineno = "";
-                    window.plants = "";
-                    window.accountassign = "";
-                    window.GLAccount = "";
-                    window.Close = "";
                     var that = this;
                     var that1 = this;
                     var aFilters = [];
@@ -60,9 +52,11 @@ sap.ui.define([
                         },
                         success: function (oData) {
                             aLineItemArr = oData;
+                            checkArr = oData;
                             this.setPreviewData(aLineItemArr);
                             var oModel = new sap.ui.model.json.JSONModel(aLineItemArr);
-                            window.items = aLineItemArr.HdrToItemNav.results;
+                            this.setButtonVisible(aLineItemArr);
+                            // this.getOwnerComponent().items = aLineItemArr.HdrToItemNav.results;
                             this.handlenoofitemspreview(aLineItemArr);
                             this.getView().setModel(oModel, "PRPreviewModel");
                             this.getView().setModel(oModel, "PRHeaderModel");
@@ -190,9 +184,10 @@ sap.ui.define([
                 });
             },
             setPreviewData: function (data) {
+                TotArr = data.HdrToItemNav.results;
                 var values = data.HdrToItemNav.results.map(val => val.Bnfpo);
                 var max = Math.max.apply(null, values);
-                window.lineno = max;
+                this.getOwnerComponent().lineno = max;
                 aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
                     if (PRCopy === "X") {
                         val.Banfn = "";
@@ -228,9 +223,24 @@ sap.ui.define([
             },
 
             onBack: function (oEvent) {
+                /*        var crnavi = sap.ushell.Container.getService("CrossApplicationNavigation");
+                        var hashUrl = (sap.ushell && sap.ushell.Container &&
+                            sap.ushell.Container.getService("CrossApplicationNavigation").hrefForExternal({
+                                target: {
+                                    semanticObject: "Myinbox",
+                                    action: "Requisition"
+                                }
+                            })) || "",
+                            url = hashUrl + "?sap-ui-app-id-hint=saas_approuter_zinboxreq&/DetailView/PRCoding";
+                     
+                        sap.m.URLHelper.redirect(url, false);*/
+                // this.getOwnerComponent().history.go(-1);
+                var PrPreData = this.getView().getModel('PRPreviewModel').getData();
                 if (PRNo === "X") {
                     //  sap.ui.controller("zprcreatenew.controller.PRCreation").onSelectionChange(oEvent);
                     this.getOwnerComponent().getRouter().navTo("RoutePRCreation");
+                } else if (PrPreData.flg === 'A' || PrPreData.flg === 'R') {
+                    this.getOwnerComponent().history.go(-1);
                 } else {
                     this.getOwnerComponent().getRouter().navTo("PRDisplay", {
                         Display: "sPoNumber"
@@ -241,12 +251,13 @@ sap.ui.define([
             onAddLineItemData: function (oEvent) {
                 var valid = this.onSaveSubmitPrew();
                 if (valid !== "a") {
-                    var oModel = new sap.ui.model.json.JSONModel(window.items);
+                    var oModel = new sap.ui.model.json.JSONModel(this.getOwnerComponent().items);
                     this.getView().setModel(oModel, "PRLineModel");
                     sap.ui.getCore().setModel(oModel, "PRLineModel");
-                    window.lastlinekey = "";
+                    this.getOwnerComponent().lastlinekey = "";
+                    // this.newitem = "";
                     this.onLineItemSave();
-                    this.onFillLineItemData();
+                    this.onFillLineItemData("No");
                 }
             },
             handlenoofitemspreview: function (data) {
@@ -254,14 +265,16 @@ sap.ui.define([
                 var LastNo = "";
                 data.HdrToItemNav.results.forEach(function (val, idx) {
                     var obj = {};
+                    val.Bnfpo = parseInt(val.Bnfpo).toString();
                     obj.Bnfpo = val.Bnfpo;
                     LastNo = val.Bnfpo;
                     arr.push(obj);
-                    // window.items.push(obj);
+                    // this.getOwnerComponent().items.push(obj);
                 });
-                if (window.lineno === "") {
-                    window.lineno = LastNo;
+                if (this.getOwnerComponent().lineno === "") {
+                    this.getOwnerComponent().lineno = LastNo;
                 }
+                this.getOwnerComponent().items = arr;
                 var oModel = new sap.ui.model.json.JSONModel(arr);
                 this.getView().setModel(oModel, "PRLineModel");
                 sap.ui.getCore().setModel(oModel, "PRLineModel");
@@ -278,7 +291,7 @@ sap.ui.define([
                    });
                    if (selectedobj.length > 0) {
                        selectedobj = oLineItem;
-
+    
                    } else {
                        aLineItemArr.HdrToItemNav.results.push(oLineItem);
                    }
@@ -291,97 +304,107 @@ sap.ui.define([
            },*/
 
             onPREdit: function (oEvent) {
-                this.Coding = sap.ui.xmlfragment("zprcreatenew.Fragment.Coding", this);
-                this.getView().addDependent(this.Coding);
-                window.lastlinekey = "";
-                var PRData = this.getView().byId("PRPreviewTable").getSelectedItem().getBindingContext("PRPreviewModel").getObject();
-                this.Coding.open();
-                sap.ui.getCore().byId("idReqItemNo").attachBrowserEvent("click", function (oEvent) {
-                    window.lastlinekey = sap.ui.getCore().byId("idReqItemNo").getSelectedKey();
-                });
-                var oPRLineItemObj = {};
-                var oPRHeaderObj = this.getView().getModel("PRPreviewModel").getData();
-                //var headerobj = sap.ui.getCore().getModel("PRHeaderModel").getData();
-                if (PRData.Lfdat !== "") {
-                    var Date1 = new Date(PRData.Lfdat);
-                    if (PRData.Lfdat) {
-                        if (PRData.Lfdat[2] === "." && (isNaN(Date1.getTime()))) {
-                            var ui = PRData.Lfdat.split(".");
-                            var Date12 = ui[2] + "-" + ui[1] + "-" + ui[0];
-                            Date1 = new Date(Date12);
-                        }
-                    }
-                    // jquery.sap.require("sap.ui.core.format.DateFormat");
-                    var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
-                        pattern: "dd.MM.yyyy"
+                if (this.getView().byId("PRPreviewTable").getSelectedItem()) {
+                    this.Coding = sap.ui.xmlfragment("zprcreatenew.Fragment.Coding", this);
+                    this.getView().addDependent(this.Coding);
+                    this.getOwnerComponent().lastlinekey = "";
+                    var PRData = this.getView().byId("PRPreviewTable").getSelectedItem().getBindingContext("PRPreviewModel").getObject();
+                    this.Coding.open();
+                    var that = this;
+                    sap.ui.getCore().byId("idReqItemNo").attachBrowserEvent("click", function (oEvent) {
+                        that.getOwnerComponent().lastlinekey = sap.ui.getCore().byId("idReqItemNo").getSelectedKey();
                     });
-                    PRData.Lfdat = oDateFormat.format(Date1);
-                }
-                oPRLineItemObj.Text = oPRHeaderObj.Text;
-                oPRLineItemObj.Elifn = oPRHeaderObj.Elifn;
-                oPRLineItemObj.Waers = oPRHeaderObj.Waers;
-                oPRLineItemObj.Bnfpo = PRData.Bnfpo;
-                oPRLineItemObj.Txz01 = PRData.Txz01;
-                oPRLineItemObj.Text1 = PRData.Text;
-                oPRLineItemObj.Menge = PRData.Menge;
-                oPRLineItemObj.Land1 = PRData.Land1;
-                oPRLineItemObj.Meins = PRData.Meins;
-                oPRLineItemObj.Peinh = PRData.Peinh;
-                oPRLineItemObj.Lfdat = PRData.Lfdat;
-                oPRLineItemObj.Knttp = PRData.Knttp;
-                oPRLineItemObj.Kostl = PRData.Kostl;
-                oPRLineItemObj.Aufnr = PRData.Aufnr;
-                oPRLineItemObj.Prctr = PRData.Prctr;
-                oPRLineItemObj.Bkgrp = PRData.Bkgrp;
-                oPRLineItemObj.Zzempno = PRData.Zzempno;
-                oPRLineItemObj.Isbn = PRData.Isbn;
-                oPRLineItemObj.Batch = PRData.Batch;
-                oPRLineItemObj.Matkl = PRData.Matkl;
-                oPRLineItemObj.Sakto = PRData.Sakto;
-                if (window.lineitem !== "") {
-                    oPRLineItemObj.Rlwrt = window.lineitem;
+                    var oPRLineItemObj = {};
+                    var oPRHeaderObj = this.getView().getModel("PRPreviewModel").getData();
+                    //var headerobj = sap.ui.getCore().getModel("PRHeaderModel").getData();
+                    if (PRData.Lfdat !== "") {
+                        var Date1 = new Date(PRData.Lfdat);
+                        if (PRData.Lfdat) {
+                            if (PRData.Lfdat[2] === "." && (isNaN(Date1.getTime()))) {
+                                var ui = PRData.Lfdat.split(".");
+                                var Date12 = ui[2] + "-" + ui[1] + "-" + ui[0];
+                                Date1 = new Date(Date12);
+                            }
+                        }
+                        // jquery.sap.require("sap.ui.core.format.DateFormat");
+                        var oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
+                            pattern: "dd.MM.yyyy"
+                        });
+                        PRData.Lfdat = oDateFormat.format(Date1);
+                    }
+                    oPRLineItemObj.Text = oPRHeaderObj.Text;
+                    oPRLineItemObj.Elifn = oPRHeaderObj.Elifn;
+                    oPRLineItemObj.Waers = oPRHeaderObj.Waers;
+                    oPRLineItemObj.Bnfpo = PRData.Bnfpo;
+                    oPRLineItemObj.Txz01 = PRData.Txz01;
+                    oPRLineItemObj.Text1 = PRData.Text;
+                    oPRLineItemObj.Menge = PRData.Menge;
+                    oPRLineItemObj.Land1 = PRData.Land1;
+                    oPRLineItemObj.Meins = PRData.Meins;
+                    oPRLineItemObj.Preis = PRData.Preis;
+                    oPRLineItemObj.Lfdat = PRData.Lfdat;
+                    oPRLineItemObj.Knttp = PRData.Knttp;
+                    oPRLineItemObj.Kostl = PRData.Kostl;
+                    oPRLineItemObj.Aufnr = PRData.Aufnr;
+                    oPRLineItemObj.Prctr = PRData.Prctr;
+                    oPRLineItemObj.Bkgrp = PRData.Bkgrp;
+                    oPRLineItemObj.Zzempno = PRData.Zzempno;
+                    oPRLineItemObj.Isbn = PRData.Isbn;
+                    oPRLineItemObj.Batch = PRData.Batch;
+                    oPRLineItemObj.Matkl = PRData.Matkl;
+                    oPRLineItemObj.Sakto = PRData.Sakto;
+                    oPRLineItemObj.Zestak = PRData.Zestak;
+                    if (this.getOwnerComponent().lineitem !== "") {
+                        oPRLineItemObj.Rlwrt = this.getOwnerComponent().lineitem;
+                    } else {
+                        oPRLineItemObj.Rlwrt = oPRHeaderObj.Rlwrt;
+                    }
+                    if (oPRLineItemObj.Knttp !== "") {
+                        this.setCodingVisibility(oPRLineItemObj.Knttp);
+                        this.getOwnerComponent().accountassign = oPRLineItemObj.Knttp;
+                    }
+
+
+                    oPRLineItemObj.Building = PRData.Building;
+                    oPRLineItemObj.Name1 = PRData.Name1;
+                    oPRLineItemObj.Street = PRData.Street;
+                    oPRLineItemObj.PostCode = PRData.PostCode;
+                    oPRLineItemObj.City = PRData.City;
+                    oPRLineItemObj.Land1 = PRData.Land1;
+                    oPRLineItemObj.DelvAdrTyp = PRData.DelvAdrTyp;
+                    // headerobj.DelvAdrTyp = PRData.DelvAdrTyp;
+                    oPRHeaderObj.Land1 = PRData.Land1;
+
+                    var obj1 = PRData;
+                    var obj = {};
+                    obj.LAND1 = obj1.Land1;
+                    obj.WERKS = obj1.Building;
+                    obj.NAME1 = obj1.Name1;
+                    obj.STRAS = obj1.Street;
+                    obj.PSTLZ = obj1.PostCode;
+                    obj.ORT01 = obj1.City;
+                    //headerobj.DelvAdrTyp = obj1.DelvAdrTyp;
+                    var oModel1 = new sap.ui.model.json.JSONModel(obj);
+                    this.getView().setModel(oModel1, "DeliveryAddModel");
+
+                    var oModel = new sap.ui.model.json.JSONModel(oPRLineItemObj);
+                    sap.ui.getCore().setModel(oModel, "PRLineItemModel");
+                    this.getView().setModel(oModel, "PRLineItemModel");
+
+                    this.setCodingInputFilters(oPRLineItemObj);
+                    // sap.ui.getCore().getModel("PRHeaderModel").refresh();
+                    /*var oModel1 = new sap.ui.model.json.JSONModel(headerobj);
+                    sap.ui.getCore().setModel(oModel1, "PRHeaderModel");
+                    sap.ui.getCore().getModel("PRHeaderModel").refresh(true);*/
+                    //this.getView().setModel(oModel, "PRLineItemModel");
+                    var oModel = new sap.ui.model.json.JSONModel(this.getOwnerComponent().items);
+                    this.getView().setModel(oModel, "PRLineModel");
+                    sap.ui.getCore().setModel(oModel, "PRLineModel");
                 } else {
-                    oPRLineItemObj.Rlwrt = oPRHeaderObj.Rlwrt;
+                    sap.m.MessageBox.information("Please select atleast one line item to edit", {
+                        title: "Information",
+                    });
                 }
-                if (oPRLineItemObj.Knttp !== "") {
-                    this.setCodingVisibility(oPRLineItemObj.Knttp);
-                }
-
-                oPRLineItemObj.Building = PRData.Building;
-                oPRLineItemObj.Name1 = PRData.Name1;
-                oPRLineItemObj.Street = PRData.Street;
-                oPRLineItemObj.PostCode = PRData.PostCode;
-                oPRLineItemObj.City = PRData.City;
-                oPRLineItemObj.Land1 = PRData.Land1;
-                oPRLineItemObj.DelvAdrTyp = PRData.DelvAdrTyp;
-                // headerobj.DelvAdrTyp = PRData.DelvAdrTyp;
-                oPRHeaderObj.Land1 = PRData.Land1;
-
-                var obj1 = PRData;
-                var obj = {};
-                obj.LAND1 = obj1.Land1;
-                obj.WERKS = obj1.Building;
-                obj.NAME1 = obj1.Name1;
-                obj.STRAS = obj1.Street;
-                obj.PSTLZ = obj1.PostCode;
-                obj.ORT01 = obj1.City;
-                //headerobj.DelvAdrTyp = obj1.DelvAdrTyp;
-                var oModel1 = new sap.ui.model.json.JSONModel(obj);
-                this.getView().setModel(oModel1, "DeliveryAddModel");
-
-                var oModel = new sap.ui.model.json.JSONModel(oPRLineItemObj);
-                sap.ui.getCore().setModel(oModel, "PRLineItemModel");
-                this.getView().setModel(oModel, "PRLineItemModel");
-
-                this.setCodingInputFilters(oPRLineItemObj);
-                // sap.ui.getCore().getModel("PRHeaderModel").refresh();
-                /*var oModel1 = new sap.ui.model.json.JSONModel(headerobj);
-                sap.ui.getCore().setModel(oModel1, "PRHeaderModel");
-                sap.ui.getCore().getModel("PRHeaderModel").refresh(true);*/
-                //this.getView().setModel(oModel, "PRLineItemModel");
-                var oModel = new sap.ui.model.json.JSONModel(window.items);
-                this.getView().setModel(oModel, "PRLineModel");
-                sap.ui.getCore().setModel(oModel, "PRLineModel");
             },
 
             onLineItemSave1: function (oEvent) {
@@ -420,7 +443,7 @@ sap.ui.define([
                 }
                 var finalValue = "0";
                 aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
-                    var itemValue = val.Menge * val.Peinh;
+                    var itemValue = val.Menge * val.Preis;
                     val.Gswrt = itemValue.toString();
                     finalValue = parseFloat(finalValue) + parseFloat(itemValue);
                 });
@@ -429,14 +452,14 @@ sap.ui.define([
                     finalValue = 0;
                 }
                 finalValue = parseFloat(finalValue).toFixed(2);
-                window.lineitem = finalValue;
+                this.getOwnerComponent().lineitem = finalValue;
                 var oLineItemModel = new sap.ui.model.json.JSONModel(aLineItemArr);
                 this.getView().setModel(oLineItemModel, "PRPreviewModel");
                 this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", finalValue);
                 //this.getView().getModel("PRPreviewModel").refresh(true);
                 this.getView().getModel("PRPreviewModel").refresh(true);
 
-                window.Close = "";
+                this.getOwnerComponent().Close = "";
                 //this.dialogClose();
             },
 
@@ -449,40 +472,62 @@ sap.ui.define([
 
             },
 
-            onSubmitPR: function (oEvent) {
+            onSubmitPR: function (flag) {
                 var chkflag = "";
-                var itemflg = "";
+                var msg = "Please fill mandatory field values for line item";
                 var FinalData = this.getView().getModel("PRPreviewModel").getData();
                 FinalData.HdrToItemNav.results.forEach(function (val, index) {
+                    var itemflg = "";
+                    if (val.Bkgrp === "") {
+                        chkflag = "X";
+                        itemflg = "X";
+                    }
+
+                    if (val.Matkl === "") {
+                        chkflag = "X";
+                        itemflg = "X";
+                    }
+
                     if (val.Knttp === "9") {
                         if (val.Isbn === "") {
                             chkflag = "X";
+                            itemflg = "X";
                         }
 
                     } else if (val.Knttp === "K") {
                         if (val.Kostl === "") {
                             chkflag = "X";
+                            itemflg = "X";
                         }
                     } else if (val.Knttp === "F") {
                         if (val.Aufnr === "") {
                             chkflag = "X";
+                            itemflg = "X";
                         }
                     } else if (val.Knttp === "8") {
                         if (val.Prctr === "") {
                             chkflag = "X";
+                            itemflg = "X";
                         }
                     } else {
                         chkflag = "X";
+                        itemflg = "X";
                     }
-              
-                    itemflg = val.Bnfpo;
+
+                    if (itemflg === "X") {
+                        msg = msg + " " + val.Bnfpo + ",";
+                    }
+                    //itemflg = val.Bnfpo;
                     // }
                 });
                 if (chkflag === "") {
                     SubmitFlag = "X";
+                    if (flag === "frag") {
+                        this.dialogClose();
+                    }
                     this.onSubmit();
                 } else {
-                    var msg = "Please fill mandatory field values for line item" + "  " + itemflg;
+                    //    var msg = "Please fill mandatory field values for line item" + "  " + itemflg;
                     sap.m.MessageBox.error(msg, {
                         title: "Error",
                     });
@@ -512,6 +557,7 @@ sap.ui.define([
                 var Quantity = "", Price = "", operation = "";
                 var finalValue = "0";
                 var flag = "";
+                var that = this;
                 if (Data.quantity || Data.quantity1 || Data.price || Data.price1) {
 
                     if (Data.quantity !== "" || Data.quantity1 !== "" || Data.price !== "" || Data.price1 !== "") {
@@ -545,27 +591,28 @@ sap.ui.define([
                     }
                     if (Data.price) {
                         if (Data.price !== "") {
-                            Price = val.Peinh * Data.price / 100;
-                            val.Peinh = parseFloat(val.Peinh) + parseFloat(Price);
-                            val.Peinh = parseFloat(val.Peinh).toFixed(2);
+                            Price = val.Preis * Data.price / 100;
+                            val.Preis = parseFloat(val.Preis) + parseFloat(Price);
+                            val.Preis = parseFloat(val.Preis).toFixed(2);
                         }
                     }
                     if (Data.price1) {
                         if (Data.price1 !== "") {
-                            Price = val.Peinh * Data.price1 / 100;
-                            val.Peinh = parseFloat(val.Peinh) - parseFloat(Price);
-                            val.Peinh = parseFloat(val.Peinh).toFixed(2);
+                            Price = val.Preis * Data.price1 / 100;
+                            val.Preis = parseFloat(val.Preis) - parseFloat(Price);
+                            val.Preis = parseFloat(val.Preis).toFixed(2);
                         }
                     }
 
-                    var itemValue = val.Menge * val.Peinh;
-                    val.Gswrt = itemValue.toString();
+                    var itemValue = val.Menge * val.Preis;
+                    val.Gswrt = parseFloat(itemValue).toFixed(2);
+                    val.Gswrt = val.Gswrt.toString();
                     finalValue = parseFloat(finalValue) + parseFloat(itemValue);
                     if (isNaN(finalValue) === true) {
                         finalValue = 0;
                     }
                     finalValue = parseFloat(finalValue).toFixed(2);
-                    window.lineitem = finalValue;
+                    that.getOwnerComponent().lineitem = finalValue;
                 });
 
                 this.onQuanClose();
@@ -628,25 +675,31 @@ sap.ui.define([
             },
 
             onPRLineDelete: function (oEvent) {
+                this.getOwnerComponent().Close = "";
                 var Bnfpo = this.getView().byId("PRPreviewTable").getSelectedItem().getBindingContext("PRPreviewModel").getObject().Bnfpo;
                 var oLineItem1 = this.getView().getModel("PRPreviewModel").getData();
                 var SelectedKey = Bnfpo;
-                var Array = window.items;
+                var Array = this.getOwnerComponent().items;
                 var flag = "";
+                var that = this;
                 oLineItem1.HdrToItemNav.results.forEach(function (val, idx) {
                     if (val.Bnfpo === SelectedKey) {
                         oLineItem1.HdrToItemNav.results.splice(idx, 1);
-                        val.Loekz = "X";
-                        DeleteArray.push(val);
-                        //  Array.splice(idx, 1);
                         flag = "X";
+                        if (val.Zestak === "Saved") {
+                            val.Loekz = "X";
+                            DeleteArray.push(val);
+                        } else {
+                            // that.newitem = "X";
+                        }
+                        Array.splice(idx, 1);
                     }
                 });
 
                 if (flag === "X") {
                     var finalValue = "0";
                     aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
-                        var itemValue = val.Menge * val.Peinh;
+                        var itemValue = val.Menge * val.Preis;
                         val.Gswrt = itemValue.toString();
                         finalValue = parseFloat(finalValue) + parseFloat(itemValue);
                     });
@@ -655,56 +708,298 @@ sap.ui.define([
                         finalValue = 0;
                     }
                     finalValue = parseFloat(finalValue).toFixed(2);
-                    window.lineitem = finalValue;
-                    this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", window.lineitem);
+                    this.getOwnerComponent().lineitem = finalValue;
+                    this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", this.getOwnerComponent().lineitem);
                     this.getView().getModel("PRPreviewModel").refresh(true);
-                    this.dialogClose();
+                    //  this.dialogClose();
+                    TotArr = [];
+                    TotArr = TotArr.concat(aLineItemArr.HdrToItemNav.results, DeleteArray);
+                    var odata1 = {};
+                    TotArr.forEach(function (val, idx) {
+                        odata1 = val;
+                    })
+                    if (odata1.Bnfpo) {
+                        this.getOwnerComponent().lineno = parseInt(odata1.Bnfpo) + parseInt(10);
+                        this.getOwnerComponent().lineno = this.getOwnerComponent().lineno.toString();
+                        //  this.getOwnerComponent().lineno =  + 10;
+                    };
                     sap.m.MessageBox.success("Data has been deleted", {
                         title: "Success",
                     });
                 }
             },
-            handleRemovePress: function (oEvent) {
-                var oLineItem = sap.ui.getCore().getModel("PRLineItemModel").getData();
-                var Array = window.items;
-                if (this.getView().getModel("PRPreviewModel")) {
-                    var oLineItem1 = this.getView().getModel("PRPreviewModel").getData();
-                    var SelectedKey = oLineItem.Bnfpo;
-                    var flag = "";
-                    oLineItem1.HdrToItemNav.results.forEach(function (val, idx) {
-                        if (val.Bnfpo === SelectedKey) {
-                            val.Loekz = "X";
-                            DeleteArray.push(val);
-                            oLineItem1.HdrToItemNav.results.splice(idx, 1);
-                            //  Array.splice(idx, 1);
-                            flag = "X";
-                        }
-                    });
 
-                    if (flag === "X") {
-                        var finalValue = "0";
-                        aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
-                            var itemValue = val.Menge * val.Peinh;
-                            val.Gswrt = itemValue.toString();
-                            finalValue = parseFloat(finalValue) + parseFloat(itemValue);
+            onPRCodingDetail: function (oEvent) {
+                // this.getOwnerComponent().Close = "";
+                this.onCodingDetail(oEvent);
+            },
+            handleRemovePress: function (oEvent) {
+                this.getOwnerComponent().Close = "";
+                if (PRNo === "X") {
+                    var oLineItem = sap.ui.getCore().getModel("PRLineItemModel").getData();
+                    var Array = this.getOwnerComponent().items;
+                    var index = "";
+                    if (this.getView().getModel("PRPreviewModel")) {
+                        var oLineItem1 = this.getView().getModel("PRPreviewModel").getData();
+                        var SelectedKey = oLineItem.Bnfpo;
+                        var flag = "";
+                        oLineItem1.HdrToItemNav.results.forEach(function (val, idx) {
+                            if (val.Bnfpo === SelectedKey) {
+                                if (val.Zestak === "Saved") {
+                                    val.Loekz = "X";
+                                    DeleteArray.push(val);
+                                }
+                                oLineItem1.HdrToItemNav.results.splice(idx, 1);
+                                Array.splice(idx, 1);
+                                flag = "X";
+                            }
                         });
-                        // HeaderData.Rlwrt = finalValue;
-                        if (isNaN(finalValue) === true) {
-                            finalValue = 0;
+
+                        if (flag === "X") {
+                            var finalValue = "0";
+                            aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                                var itemValue = val.Menge * val.Preis;
+                                val.Gswrt = itemValue.toString();
+                                finalValue = parseFloat(finalValue) + parseFloat(itemValue);
+                            });
+                            // HeaderData.Rlwrt = finalValue;
+                            if (isNaN(finalValue) === true) {
+                                finalValue = 0;
+                            }
+                            finalValue = parseFloat(finalValue).toFixed(2);
+                            this.getOwnerComponent().lineitem = finalValue;
+                            this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", this.getOwnerComponent().lineitem);
+                            this.getView().getModel("PRPreviewModel").refresh(true);
+                            // this.dialogClose();
+                            sap.m.MessageBox.success("Data has been deleted", {
+                                title: "Success",
+                            });
+                            var data = {};
+                            aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                                data = val;
+                            });
+
+                            oLineItem = data;
+
+                            if (data.Bnfpo) {
+                                this.getOwnerComponent().lineno = data.Bnfpo;
+                            }
+
+                            //this.getOwnerComponent().lineno = this.getOwnerComponent().lineno - 10;
+
+                            if (this.getOwnerComponent().items.length === 0) {
+                                this.getOwnerComponent().lineno = "10";
+                                var obj = { Bnfpo: this.getOwnerComponent().lineno }
+                                this.getOwnerComponent().items.push(obj);
+                                var typ = "No";
+                                this.onclearlineitem(oLineItem);
+                                this.getOwnerComponent().Close = "X";
+
+                                this.onFillLineItemData(typ);
+                            } else {
+                                var oModel = new sap.ui.model.json.JSONModel(oLineItem);
+                                this.getView().setModel(oModel, "PRLineItemModel");
+                                sap.ui.getCore().setModel(oModel, "PRLineItemModel");
+                                if (oLineItem) {
+                                    if (oLineItem.Knttp) {
+                                        this.setCodingVisibility(oLineItem.Knttp);
+                                    }
+                                    this.setCodingInputFilters(oLineItem);
+
+                                }
+                            }
+
+                            var oModel = new sap.ui.model.json.JSONModel(this.getOwnerComponent().items);
+                            this.getView().setModel(oModel, "PRLineModel");
+                            sap.ui.getCore().setModel(oModel, "PRLineModel");
+                            sap.ui.getCore().getModel("PRLineModel").refresh(true);
+                        } else {
+                            var data = {};
+                            aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                                data = val;
+                            });
+
+                            oLineItem = data;
+
+                            Array.forEach(function (val, idx) {
+                                if (val.Bnfpo === SelectedKey) {
+                                    index = idx;
+                                    Array.splice(idx, 1);
+                                }
+                            });
+
+                            this.getOwnerComponent().Close = "X";
+                            if (data.Bnfpo) {
+                                this.getOwnerComponent().lineno = data.Bnfpo;
+                            }
+
+                            if (this.getOwnerComponent().items.length === 0) {
+                                this.getOwnerComponent().lineno = "10";
+                                var obj = { Bnfpo: this.getOwnerComponent().lineno }
+                                this.getOwnerComponent().items.push(obj);
+                                var typ = "No";
+                                this.onclearlineitem(oLineItem);
+                                this.onFillLineItemData(typ);
+                            } else {
+                                oLineItem = data;
+                                var oModel = new sap.ui.model.json.JSONModel(oLineItem);
+                                this.getView().setModel(oModel, "PRLineItemModel");
+                                sap.ui.getCore().setModel(oModel, "PRLineItemModel");
+                                if (oLineItem) {
+                                    if (oLineItem.Knttp) {
+                                        this.setCodingVisibility(oLineItem.Knttp);
+                                    }
+                                    this.setCodingInputFilters(oLineItem);
+
+                                }
+                            }
+
+
                         }
-                        finalValue = parseFloat(finalValue).toFixed(2);
-                        window.lineitem = finalValue;
-                        this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", window.lineitem);
-                        this.getView().getModel("PRPreviewModel").refresh(true);
-                        this.dialogClose();
-                        sap.m.MessageBox.success("Data has been deleted", {
-                            title: "Success",
+                    } else {
+                        sap.m.MessageBox.information("Line Item cannot be deleted", {
+                            title: "Information",
                         });
                     }
                 } else {
-                    sap.m.MessageBox.information("Line Item cannot be deleted", {
-                        title: "Information",
-                    });
+                    var oLineItem = sap.ui.getCore().getModel("PRLineItemModel").getData();
+                    var Array = this.getOwnerComponent().items;
+                    if (this.getView().getModel("PRPreviewModel")) {
+                        var oLineItem1 = this.getView().getModel("PRPreviewModel").getData();
+                        var SelectedKey = oLineItem.Bnfpo;
+                        var flag = "";
+                        oLineItem1.HdrToItemNav.results.forEach(function (val, idx) {
+                            if (val.Bnfpo === SelectedKey) {
+                                if (val.Zestak === "Saved") {
+                                    val.Loekz = "X";
+                                    DeleteArray.push(val);
+                                }
+                                oLineItem1.HdrToItemNav.results.splice(idx, 1);
+                                Array.splice(idx, 1);
+                                flag = "X";
+                            }
+                        });
+
+                        if (flag === "X") {
+                            var finalValue = "0";
+                            aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                                var itemValue = val.Menge * val.Peinh;
+                                val.Gswrt = itemValue.toString();
+                                finalValue = parseFloat(finalValue) + parseFloat(itemValue);
+                            });
+                            // HeaderData.Rlwrt = finalValue;
+                            if (isNaN(finalValue) === true) {
+                                finalValue = 0;
+                            }
+                            finalValue = parseFloat(finalValue).toFixed(2);
+                            this.getOwnerComponent().lineitem = finalValue;
+                            this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", this.getOwnerComponent().lineitem);
+                            this.getView().getModel("PRPreviewModel").refresh(true);
+                            //this.dialogClose();
+
+                            var data = {};
+                            aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                                data = val;
+                            });
+
+                            oLineItem = data;
+                            TotArr = [];
+                            TotArr = TotArr.concat(aLineItemArr.HdrToItemNav.results, DeleteArray);
+                            /* var odata1 = {};
+                             TotArr.forEach(function(val,idx){
+                                 odata1 = val;
+                             })*/
+                            var values = TotArr.map(val => val.Bnfpo);
+                            var max = Math.max.apply(null, values);
+                            if (max) {
+                                this.getOwnerComponent().lineno = parseInt(max) + parseInt(10);
+                                this.getOwnerComponent().lineno = this.getOwnerComponent().lineno.toString();
+                            }
+                            /*   this.getOwnerComponent().lineno = max;
+                               
+                               if(odata1.Bnfpo){
+                                   this.getOwnerComponent().lineno = parseInt(odata1.Bnfpo) + parseInt(10);
+                                   this.getOwnerComponent().lineno = this.getOwnerComponent().lineno.toString();
+                             //  this.getOwnerComponent().lineno =  + 10;
+                               };*/
+                            var oModel = new sap.ui.model.json.JSONModel(oLineItem);
+                            this.getView().setModel(oModel, "PRLineItemModel");
+                            sap.ui.getCore().setModel(oModel, "PRLineItemModel");
+                            if (oLineItem) {
+                                if (oLineItem.Knttp) {
+                                    this.setCodingVisibility(oLineItem.Knttp);
+                                }
+                                this.setCodingInputFilters(oLineItem);
+
+                            }
+                            var oModel = new sap.ui.model.json.JSONModel(this.getOwnerComponent().items);
+                            this.getView().setModel(oModel, "PRLineModel");
+                            sap.ui.getCore().setModel(oModel, "PRLineModel");
+                            sap.ui.getCore().getModel("PRLineModel").refresh(true);
+                            var oModel = new sap.ui.model.json.JSONModel(oLineItem);
+                            this.getView().setModel(oModel, "PRLineItemModel");
+                            sap.ui.getCore().setModel(oModel, "PRLineItemModel");
+
+                            var oModel = new sap.ui.model.json.JSONModel(this.getOwnerComponent().items);
+                            this.getView().setModel(oModel, "PRLineModel");
+                            sap.ui.getCore().setModel(oModel, "PRLineModel");
+                            sap.ui.getCore().getModel("PRLineModel").refresh(true);
+                            this.newitem = "";
+                            sap.m.MessageBox.success("Data has been deleted", {
+                                title: "Success",
+                            });
+                        } else {
+                            var data = {};
+                            aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                                data = val;
+                            });
+
+                            oLineItem = data;
+                            TotArr = [];
+                            TotArr = TotArr.concat(aLineItemArr.HdrToItemNav.results, DeleteArray);
+                            var values = TotArr.map(val => val.Bnfpo);
+                            var max = Math.max.apply(null, values);
+                            if (max) {
+                                this.getOwnerComponent().lineno = parseInt(max) + parseInt(10);
+                                this.getOwnerComponent().lineno = this.getOwnerComponent().lineno.toString();
+                            }
+                            /*  var odata1 = {};
+                              TotArr.forEach(function(val,idx){
+                                  odata1 = val;
+                              })
+                              if(odata1.Bnfpo){
+                                  this.getOwnerComponent().lineno = parseInt(odata1.Bnfpo) + parseInt(10);
+                                  this.getOwnerComponent().lineno = this.getOwnerComponent().lineno.toString();
+                            //  this.getOwnerComponent().lineno =  + 10;
+                              };*/
+
+                            /*\\  Array.forEach(function (val, idx) {
+                                  if (val.Bnfpo === SelectedKey) {
+                                      index = idx;
+                                      Array.splice(idx, 1);
+                                  }
+                              });*/
+                            this.getOwnerComponent().Close = "X";
+                            this.newitem = "X";
+                            var oModel = new sap.ui.model.json.JSONModel(oLineItem);
+                            this.getView().setModel(oModel, "PRLineItemModel");
+                            sap.ui.getCore().setModel(oModel, "PRLineItemModel");
+                            if (oLineItem) {
+                                if (oLineItem.Knttp) {
+                                    this.setCodingVisibility(oLineItem.Knttp);
+                                }
+                                this.setCodingInputFilters(oLineItem);
+
+                            }
+
+
+                        }
+                    } else {
+                        sap.m.MessageBox.information("Line Item cannot be deleted", {
+                            title: "Information",
+                        });
+                    }
+
                 }
             },
             onLineSubmit: function (oEvent) {
@@ -728,8 +1023,8 @@ sap.ui.define([
                 var that = this;
                 var FinalData = this.getView().getModel("PRPreviewModel").getData();
                 var oPRHeaderObj = aLineItemArr;
-                if (window.lineitem === "" || Number.isNaN(window.lineitem) === true) {
-                    window.lineitem = oPRHeaderObj.Rlwrt;
+                if (this.getOwnerComponent().lineitem === "" || Number.isNaN(this.getOwnerComponent().lineitem) === true) {
+                    this.getOwnerComponent().lineitem = oPRHeaderObj.Rlwrt;
                 }
                 var Status = "Saved";
                 var LineStatus = "Saved";
@@ -747,8 +1042,17 @@ sap.ui.define([
                 oFinalObj.Elifn = oPRHeaderObj.Elifn;
                 oFinalObj.Waers = oPRHeaderObj.Waers;
                 oFinalObj.Zestak = Status;
-                oFinalObj.Rlwrt = window.lineitem.toString();
+                oFinalObj.Rlwrt = this.getOwnerComponent().lineitem.toString();
                 oFinalObj.Erfdate = oPRHeaderObj.Erfdate;
+                if (oPRHeaderObj.Name1) {
+                    if (oPRHeaderObj.Name1 !== "") {
+                        oFinalObj.Name1 = oPRHeaderObj.Name1;
+                    } else {
+                        oFinalObj.Name1 = this.getOwnerComponent().VendorName;
+                    }
+                } else {
+                    oFinalObj.Name1 = this.getOwnerComponent().VendorName;
+                }
                 // oFinalObj.Gswrt = oPRHeaderObj.Gswrt;
                 FinalData.HdrToItemNav.results = FinalData.HdrToItemNav.results.concat(DeleteArray);
                 FinalData.HdrToItemNav.results.forEach(function (val, index) {
@@ -780,10 +1084,10 @@ sap.ui.define([
                     } else {
                         val.Menge = val.Menge.toString();
                     }
-                    if (val.Peinh === "") {
-                        val.Peinh = "0";
+                    if (val.Preis === "") {
+                        val.Preis = "0";
                     } else {
-                        val.Peinh = val.Peinh.toString();
+                        val.Preis = val.Preis.toString();
                     }
 
                     if (val.Gswrt === "") {
@@ -826,21 +1130,21 @@ sap.ui.define([
                                 var split1 = sAlert.split("is");
                                 var split2 = split1[0].split(".");
                                 this.PRNum = split2[1].trim();
-                                window.PRNum = this.PRNum;
+                                this.getOwnerComponent().PRNum = this.PRNum;
                             } else {
                                 var Msg = JSON.parse(oError.responseText).error.innererror.errordetails[0].message;
                                 sAlert = Msg;
                                 var split1 = Msg.split("Purchase Requisition");
                                 var split2 = split1[1].split("is");
                                 this.PRNum = split2[0].trim();
-                                window.PRNum = this.PRNum;
+                                this.getOwnerComponent().PRNum = this.PRNum;
                             }
                             if (PRNo === "X") {
                                 this.onStartUpload(this.PRNum);
                             }
                             this.getView().setBusy(false);
                             if (SubmitFlag === "X") {
-                            this.onWorkflow(window.PRNum);
+                                // this.onWorkflow(this.getOwnerComponent().PRNum);
                             }
                             sap.m.MessageBox.success(sAlert, {
                                 title: "Success",
@@ -976,7 +1280,7 @@ sap.ui.define([
                             });
                             PRData.Lfdat = oDateFormat.format(Date1);
                         }
-    
+     
                         var obj1 = selectedobj[0];
                         var obj = {};
                         obj.LAND1 = obj1.Land1;
@@ -988,8 +1292,8 @@ sap.ui.define([
                         // HeaderMod.DelvAdrTyp = obj1.DelvAdrTyp;
                         var oModel1 = new sap.ui.model.json.JSONModel(obj);
                         this.getView().setModel(oModel1, "DeliveryAddModel");
-    
-    
+     
+     
                         var oModel = new sap.ui.model.json.JSONModel(selectedobj[0]);
                         this.getView().setModel(oModel, "PRLineItemModel");
                         sap.ui.getCore().setModel(oModel, "PRLineItemModel");
@@ -999,18 +1303,18 @@ sap.ui.define([
                     }*/
                 var that = this;
                 var SelectedKey = oEvent.getSource().getSelectedKey();
-                /* if(window.lastlinekey === ""){
+                /* if(this.getOwnerComponent().lastlinekey === ""){
                      var ui = sap.ui.getCore().byId("idReqItemNo").getDomRef();
                      var op = ui.innerText;
                      var yu = op.split("\n");
-                     window.lastlinekey = yu[0];
+                     this.getOwnerComponent().lastlinekey = yu[0];
                     }*/
                 var valid = this.onSaveSubmitPrew();
                 if (valid !== "a") {
 
                     // this.onFillLineItemData();
 
-                    var SelectedKey = window.lastlinekey;
+                    var SelectedKey = this.getOwnerComponent().lastlinekey;
                     // var HeaderMod = sap.ui.getCore().getModel("PRHeaderModel").getData();
                     if (this.getView().getModel("PRPreviewModel")) {
                         var oLineItem = this.getView().getModel("PRPreviewModel").getData();
@@ -1102,21 +1406,190 @@ sap.ui.define([
                             this.getView().getModel("PRLineItemModel").refresh(true);
                             sap.ui.getCore().getModel("PRLineItemModel").refresh(true);
                             this.setCodingInputFilters(selectedobj[0]);
-                            window.accountassign = selectedobj[0].Knttp;
+                            this.getOwnerComponent().accountassign = selectedobj[0].Knttp;
                         }
                     }
                     // }
                 } else {
                     oEvent.getSource().setSelectedKey("");
-                    oEvent.getSource().setSelectedKey(window.lastlinekey);
-                    //    oEvent.getSource().setSelectedItem(window.lastlinekey);
+                    oEvent.getSource().setSelectedKey(this.getOwnerComponent().lastlinekey);
+                    //    oEvent.getSource().setSelectedItem(this.getOwnerComponent().lastlinekey);
                     //  var last = oEvent.getSource().getLastItem();
                     //  oEvent.getSource().setSelectedItem(last);
 
 
                 }
-                //    window.lastlinekey = Selkey;
+                //    this.getOwnerComponent().lastlinekey = Selkey;
             },
 
+            onApprovalDialog: function () {
+
+                MessageBox.show(
+
+                    "Do you want to Approve ? ", {
+
+                    title: "Approve",
+
+                    actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+
+                    emphasizedAction: MessageBox.Action.YES,
+
+                    onClose: function (oAction) {
+
+                        if (oAction === 'YES') {
+
+
+
+                        }
+
+                    }
+
+                }
+
+                );
+
+            },
+
+            onComments: function (oEvent) {
+
+                this.oSubmitDialog.getBeginButton().setEnabled(oEvent.getParameter("value").length > 0);
+
+            },
+
+            onRejectDialog: function () {
+
+                if (!this._oRejectDialog) {
+
+                    this._oRejectDialog = sap.ui.xmlfragment(zprcreatenew.Fragment.Reject, this);
+
+                    this.getView().addDependent(this._oRejectDialog);
+
+                }
+
+                this._oRejectDialog.open();
+
+            },
+
+            onReject: function () {
+                this._oRejectDialog.close();
+            },
+
+            onCancel: function () {
+                this._oRejectDialog.close();
+            },
+
+            setButtonVisible: function (data) {
+                var butnarr = ["prSave", "prSaveSubmit", "prSaveSubmit23", "prSaveSubmit222", "arrLeft11222", "Addpr", "editpr", "delpr"];
+                var visible = true;
+                if (data.Zestak === "Submitted" && PRCopy !== "X" ) {
+                    visible = false;
+                }
+                var that = this;
+                butnarr.forEach(function (val, idx) {
+                    that.getView().byId(val).setVisible(visible);
+                });
+            },
+
+            afterchange2: function (oEvent) {
+                var sNumber = "";
+                var value = oEvent.getSource().getValue();
+                var bNotnumber = isNaN(value);
+                if (bNotnumber == false) {
+                    var Val = parseFloat(value).toFixed(2);
+                    Val = Val.toString();
+                    oEvent.getSource().setValue(Val);
+                    var finalValue = "0";
+                    var key1 = this.getView().getModel("PRLineItemModel").getData().Bnfpo;
+                    aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                        if (key1 !== val.Bnfpo) {
+                            var itemValue = val.Menge * val.Preis;
+                            val.Gswrt = itemValue.toString();
+                            finalValue = parseFloat(finalValue) + parseFloat(itemValue);
+                        }
+                    });
+                    if (sap.ui.getCore().byId("idUnitPrc")) {
+
+                        var Menge = sap.ui.getCore().byId("idItemQnt").getValue();
+                        var Price = sap.ui.getCore().byId("idUnitPrc").getValue();
+                        var itemValue = Menge * Price;
+                        //val.Gswrt = itemValue.toString();
+                        finalValue = parseFloat(finalValue) + parseFloat(itemValue);
+                    }
+                    finalValue = parseFloat(finalValue).toFixed(2);
+                    if (isNaN(finalValue) === true) {
+                        finalValue = 0;
+                    }
+                    this.getOwnerComponent().lineitem = finalValue;
+                    this.getView().getModel("PRHeaderModel").setProperty("/Rlwrt", this.getOwnerComponent().lineitem);
+                    this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", this.getOwnerComponent().lineitem);
+                }
+                else {
+                    oEvent.getSource().setValue(sNumber);
+                }
+            },
+            afterchange1: function (oEvent) {
+                var sNumber = "";
+                var value = oEvent.getSource().getValue();
+                var bNotnumber = isNaN(value);
+                if (bNotnumber == false) {
+                    var Val = parseFloat(value).toFixed(3);
+                    Val = Val.toString();
+                    oEvent.getSource().setValue(Val);
+                    var finalValue = "0";
+                    var key1 = this.getView().getModel("PRLineItemModel").getData().Bnfpo;
+                    aLineItemArr.HdrToItemNav.results.forEach(function (val, idx) {
+                        if (key1 !== val.Bnfpo) {
+                            var itemValue = val.Menge * val.Preis;
+                            val.Gswrt = itemValue.toString();
+                            finalValue = parseFloat(finalValue) + parseFloat(itemValue);
+                        }
+                    });
+                    if (sap.ui.getCore().byId("idUnitPrc")) {
+
+                        var Menge = sap.ui.getCore().byId("idItemQnt").getValue();
+                        var Price = sap.ui.getCore().byId("idUnitPrc").getValue();
+                        var itemValue = Menge * Price;
+                        //val.Gswrt = itemValue.toString();
+                        finalValue = parseFloat(finalValue) + parseFloat(itemValue);
+                    }
+                    finalValue = parseFloat(finalValue).toFixed(2);
+                    if (isNaN(finalValue) === true) {
+                        finalValue = 0;
+                    }
+
+                    //HeaderData.Rlwrt = finalValue;
+                    this.getOwnerComponent().lineitem = finalValue;
+                    this.getView().getModel("PRHeaderModel").setProperty("/Rlwrt", this.getOwnerComponent().lineitem);
+                    this.getView().getModel("PRPreviewModel").setProperty("/Rlwrt", this.getOwnerComponent().lineitem);
+                }
+                else {
+                    oEvent.getSource().setValue(sNumber);
+                }
+            },
+            onItemdesc: function (oEvent) {
+                var data = oEvent.getSource().getBindingContext("PRPreviewModel").getObject();
+                var itemdesc = "";
+                if(data.Text1){
+                    itemdesc = data.Text1;
+                }else{
+                    itemdesc = data.Text;
+                }
+                if (!this.ItemDesDialog) {
+                    this.ItemDesDialog = new sap.m.Dialog({
+                        //type: DialogType.Message,
+                        title: "Item Description",
+                        content: new sap.m.Text({ text: itemdesc }),
+                        beginButton: new sap.m.Button({
+                            type: sap.m.ButtonType.Emphasized,
+                            text: "OK",
+                            press: function () {
+                                this.ItemDesDialog.close();
+                            }.bind(this)
+                        })
+                    });
+                }
+
+                this.ItemDesDialog.open();
+            }
         });
     });

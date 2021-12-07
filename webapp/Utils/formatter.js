@@ -29,7 +29,13 @@ sap.ui.define(["sap/ui/core/format/DateFormat"], function (format) {
             });
 
             return Text;
-        }
+        },
 
+        formatSno:function(val){
+            if(val){
+                val = parseInt(val).toString();
+            }
+            return val;
+        }
     };
 });

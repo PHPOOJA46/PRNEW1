@@ -18,7 +18,7 @@
 			</suggestionItems>
             	</Input>
                     <Label text="Total Requisition Value" visible="true"/>
-					<Input value="{PRLineItemModel>/Rlwrt}"/>
+					<Input value="{PRHeaderModel>/Rlwrt}" editable="false"/>
 					<core:Title text=""/>
 					<Label class="cls-coding1" text="Currency of Req" required="true" visible="true"/>
                     <Input class="cls-coding1" value="{PRHeaderModel>/Waers}" type="Text" id="idCurr"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleCurrencyHelp"/>
@@ -48,12 +48,12 @@
                     	<core:Item key="{PRLineModel>Bnfpo}" text="{PRLineModel>Bnfpo}" />
                         </ComboBox>-->
 					<Label text="Item Description" required="true" visible="true"/>
-					<Input value="{PRLineItemModel>/Txz01}" liveChange="onChangeError" id="idItemdesc"/>
+					<Input  maxLength="40" value="{PRLineItemModel>/Txz01}" liveChange="onChangeError" id="idItemdesc"/>
 					<Label text="Item Brief Description" visible="true"/>
-					<Input value="{PRLineItemModel>/Text1}"
+					<Input maxLength="1000" value="{PRLineItemModel>/Text1}"
 					/>
 					<Label text="Item Quantity" required="true" visible="true"/>
-					<Input value="{PRLineItemModel>/Menge}" id="idItemQnt" liveChange="liveChange1"   maxLength= "13"/>
+					<Input value="{PRLineItemModel>/Menge}" id="idItemQnt" liveChange="liveChange1" change="afterchange1"  maxLength= "13"/>
 					<!--<ComboBox value="{PRLineItemModel>/Land1}"/>-->
                     <!--<Button text="View Address" press="onDeliveryAddress"/>-->
 					<core:Title text=""/>
@@ -61,7 +61,7 @@
                     <Input class="cls-coding2" value="{PRLineItemModel>/Meins}" liveChange="onChangeError" id="idUOM"  showValueHelp="true" valueHelpOnly="true"  valueHelpRequest="handleMeasureHelp"/>
 					<Text class="cls-text1 cls-coding2 cls-coding3" text="Unit Price:"/>
                     <!--<Label class="cls-textfrag1 cls-coding2 cls-coding3" required="true" text="Unit Price:"/>-->
-					<Input   class="cls-coding2"  value="{PRLineItemModel>/Peinh}" liveChange="liveChange" id="idUnitPrc"   maxLength= "5"></Input>
+					<Input   class="cls-coding2"  value="{PRLineItemModel>/Preis}" liveChange="liveChange" id="idUnitPrc" change="afterchange2"  maxLength= "11"></Input>
 					<Label text="Delivery Date" required="true"/>
 					<DatePicker valueFormat="yyyy-MM-dd" change="dateCheck" id="idDelDate" displayFormat="dd.MM.yyyy" value="{PRLineItemModel>/Lfdat}"/>
 				</f:content>

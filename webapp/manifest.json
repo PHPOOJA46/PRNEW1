@@ -74,8 +74,8 @@
         "rootView": {
             "viewName": "zprcreatenew.view.PRCreation",
             "type": "XML",
-            "async": true,
-            "id": "PRCreation1"
+            "async": true
+           
         },
         "dependencies": {
             "minUI5Version": "1.96.0",

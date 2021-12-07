@@ -33,6 +33,7 @@ modules:
         existing_destinations_policy: ignore
   build-parameters:
     no-source: true
+    
 - name: zprcreatenew-app-content
   type: com.sap.application.content
   path: .
@@ -47,6 +48,7 @@ modules:
       - zprcreatenew.zip
       name: zprcreatenew
       target-path: resources/
+      
 - name: zprcreatenew
   type: html5
   path: .
@@ -58,6 +60,7 @@ modules:
     - npm run build:cf
     supported-platforms: []
 resources:
+
 - name: zprcreatenew-dest-srv
   type: org.cloudfoundry.managed-service
   parameters:
@@ -88,7 +91,8 @@ resources:
   parameters:
     service: html5-apps-repo
     service-name: zprcreatenew-html5-srv
-    service-plan: app-host
+    service-plan: app-host        
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
+  
