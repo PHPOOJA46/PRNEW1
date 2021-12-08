@@ -67,7 +67,6 @@ sap.ui.define([
 
             onPress: function () {
                 this.AttDestroy();
-                // this.onInit("","a");
                 this.onSelectionChange("", "CreatePr");
                 this.getOwnerComponent().getRouter().navTo("PRDisplay", {
                     Display: "sPoNumber"

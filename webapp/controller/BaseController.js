@@ -151,16 +151,16 @@ sap.ui.define(
             },
 
             onAttachment: function (oEvent) {
-                //window attachment
-                if (!window._AttachPopover) {
-                    window._AttachPopover = sap.ui.xmlfragment("zprcreatenew.Fragment.Attachments", this);
+                //this attachment
+                if (!this._AttachPopover) {
+                    this._AttachPopover = sap.ui.xmlfragment("zprcreatenew.Fragment.Attachments", this);
                 }
-                window._AttachPopover.open();
+                this._AttachPopover.open();
             },
 
             onAttachment1: function (oEvent) {
-                if (window._AttachPopover) {
-                    window._AttachPopover.open();
+                if (this._AttachPopover) {
+                    this._AttachPopover.open();
                 } else {
                     this.onAttachment();
                 }
@@ -168,11 +168,11 @@ sap.ui.define(
 
             onAttClose: function (oEvent) {
                 this.Attachment = sap.ui.getCore().byId("UploadCollection");
-                window._AttachPopover.close();
+                this._AttachPopover.close();
             },
             onCheckOpenAttachment: function (oEvent) {
                 this.AttDestroy();
-                window._AttachPopover = undefined;
+                this._AttachPopover = undefined;
             },
             onAttpress: function (oEvent) {
                 var data = oEvent.getSource().getBindingContext("PRAttachModel").getObject();
@@ -182,41 +182,6 @@ sap.ui.define(
                 var html = new sap.ui.core.HTML();
                var AttMdl = this.getOwnerComponent().getModel("attachment");
                  var w = window.open(this._getRuntimeBaseURL() + "/sap/opu/odata/sap/ZP2P_ATTACHMENT_SRV" + filter,'_blank' );
-            
-             //   var w = window.open(isProxy + "/sap/opu/odata/sap/ZP2P_ATTACHMENT_SRV/"+filter , '_blank');
-//if (w == null) {
-	//MessageBox.warning(oBundle.getText("Error.BlockedPopUp"));
-//}
-            //   var AttMdl = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZP2P_ATTACHMENT_SRV/", true);
-               AttMdl.read(filter, {
-                    success: function (oData, response) {
-                        var oA = document.createElement("a");
-                        var URL = response.requestUri;
-                       //html.setContent("<iframe src=" + URL + " width='700' height='700'></iframe>");
-                        //html.placeAt("content");
-                      //  html.setContent("<iframe src=" + URL + " width='700' height='700'></iframe>");
-
-                        /*var windows = window.open("", "My PDF", " width='700' height='700'");
-                        
-                        windows.document.write(html);
-                        
-                        windows.print();
-                        
-                        windows.close();*/
-                       // var oWindow = window.open(URL, "_blank");
-                     /*   oA.href = URL;
-                        oA.target = "_blank";
-                        oA.style.display = "none";
-                        document.body.appendChild(oA);
-                        oA.click();
-                        document.body.removeChild(oA);*/
-
-                        //window.open(URL);
-                    }.bind(this),
-                    error: function (oError,data,response) {
-                        console.log(oError);
-                    }.bind(this)
-                });
             },
             onAttDelete: function (oEvent) {
                 var data = oEvent.getSource().getBindingContext("PRAttachModel").getObject();
